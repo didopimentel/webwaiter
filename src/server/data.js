@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var userFormSchema = new mongoose.Schema({
+var UserSchema = new mongoose.Schema({
   email: {
     type: String,
+    unique: true,
     required: true,
     trim: true
   },
@@ -19,10 +20,6 @@ var userFormSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
-  passwordConf: {
-    type: String,
-    required: true,
-  },
   level: {
     type: String,
     unique: false,
@@ -33,3 +30,5 @@ var userFormSchema = new mongoose.Schema({
     default: Date.now
   }
 })
+
+module.exports = mongoose.model('User', UserSchema)

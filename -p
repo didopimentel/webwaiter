@@ -1,0 +1,5 @@
+[OKAY] Loaded ENV .env File as KEY=VALUE Format
+[OKAY] package.json file found - trying 'npm start'
+21:19:55 web.1   |  > webwaiter@0.1.0 start C:\Users\didopimentel\webwaiter
+21:19:55 web.1   |  > react-scripts start
+[DONE] Killing all processes with signal  SIGINT

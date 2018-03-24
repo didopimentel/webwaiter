@@ -7,6 +7,10 @@ import * as Colors from 'material-ui/styles/colors'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import establishment from './reducers/reducer'
+import { createStore } from 'redux'
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -21,10 +25,15 @@ const muiTheme = getMuiTheme({
   },
 })
 
+const store = createStore(
+  establishment
+)
 
 const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
-    <Application/>
+    <Provider store={store}>
+      <Application/>
+    </Provider>
   </MuiThemeProvider>
 )
 

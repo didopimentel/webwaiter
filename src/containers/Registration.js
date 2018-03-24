@@ -5,7 +5,7 @@ class Registration extends Component {
 
   register(){
 
-      if (req.body.email &&
+    if (req.body.email &&
     req.body.username &&
     req.body.password &&
     req.body.passwordConf) {
@@ -13,7 +13,6 @@ class Registration extends Component {
       email: req.body.email,
       username: req.body.username,
       password: req.body.password,
-      passwordConf: req.body.passwordConf,
     }
     //use schema.create to insert data into the db
     User.create(userData, function (err, user) {
