@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Application from './containers/Application';
+import Root from './index/Root';
 import registerServiceWorker from './registerServiceWorker';
 import * as Colors from 'material-ui/styles/colors'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -9,8 +9,7 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import establishment from './reducers/reducer'
-import { createStore } from 'redux'
+import { store } from './helpers/store'
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -25,14 +24,10 @@ const muiTheme = getMuiTheme({
   },
 })
 
-const store = createStore(
-  establishment
-)
-
 const App = () => (
   <MuiThemeProvider muiTheme={muiTheme}>
     <Provider store={store}>
-      <Application/>
+      <Root />
     </Provider>
   </MuiThemeProvider>
 )

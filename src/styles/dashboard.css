@@ -1,0 +1,74 @@
+.container {
+  padding: 0;
+  margin: 0
+}
+
+.navigation-bar {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  height: 100px;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.body-container {
+  padding: 0;
+  margin: 0;
+}
+
+.table-id-container {
+  display: flex;
+  flex-direction: row;
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.10);
+  border-radius: 10px;
+}
+
+.table-id-text {
+  margin-left: 15px;
+  height: 50%;
+  background-color: white;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid red;
+}
+
+.bill-container {
+  margin-top: 25px;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0.10);
+  border-radius: 10px;
+}
+
+.bill-header {
+  padding: 10px 0 0 10px;
+}
+
+.bill-body {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  margin-left: 10px;
+}
+
+.home-submit {
+  display: flex;
+  flex: 1;
+  padding-top: 20px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

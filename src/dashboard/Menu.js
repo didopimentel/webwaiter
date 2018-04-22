@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 
-class Dashboard extends Component {
+
+class Menu extends Component {
 
   render(){
-
     return(
       <div>
-        Logged
+        Menu
       </div>
     )
   }
-
 }
+
+export default Menu

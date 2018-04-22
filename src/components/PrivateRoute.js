@@ -1,9 +1,10 @@
 import React from 'react'
+import { Route, Redirect } from 'react-router-dom'
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
+export const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route { ...rest } render={(props) => (
-    fakeAuth.isAuthenticated === true
+    localStorage.getItem('establishment')
     ? <Component  { ...props } />
-    : <Redirect to='/dashboard' />
+    : <Redirect to={{pathname: '/dashboard', state: { from: props.location }}} />
   )} />
 )
