@@ -30,7 +30,7 @@ class Application extends Component {
             <div>
             <PrivateRoute path='/dashboard/menu' component={Menu} />
             <PrivateRoute exact path='/dashboard' history={history} component={Dashboard}/>
-            <Route exact path='/' component={HomePage} />
+            <Route exact path='/' component={Menu} />
             </div>
           </Router>
         </div>

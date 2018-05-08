@@ -4,7 +4,8 @@ import { alert } from './alertReducer';
 
 const rootReducer = combineReducers({
   authentication,
-  alert
+  alert,
+  order
 });
 
 export default rootReducer;

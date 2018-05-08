@@ -1,0 +1,23 @@
+.item-container {
+  display: flex;
+  flex-direction: row;
+  background: rgba(164, 14, 14, 0.1);
+  padding: 5px;
+  margin: 4px;
+}
+
+.description-container {
+  flex: 2;
+  padding-left: 10px;
+}
+
+.price-container {
+  flex: 2;
+}
+
+.quantity-container {
+}
+
+.auxiliar-container {
+  flex: 1;
+}

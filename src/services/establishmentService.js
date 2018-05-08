@@ -25,7 +25,6 @@ function login(establishmentCode) {
                 localStorage.setItem('token', JSON.stringify(response.token))
                 localStorage.setItem('establishment', JSON.stringify(response.establishment));
             }
-            console.log('200 response', response)
             return response;
         });
 }
@@ -33,6 +32,7 @@ function login(establishmentCode) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('establishment');
+    localStorage.removeItem('token');
 }
 
 function getAll() {
