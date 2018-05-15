@@ -17,8 +17,6 @@ class Application extends Component {
 
   constructor(props) {
     super(props);
-    history.push('/');
-
   }
 
   render(){
@@ -28,9 +26,9 @@ class Application extends Component {
         <div className="container-main">
           <Router history={history}>
             <div>
-            <PrivateRoute path='/dashboard/menu' component={Menu} />
+            <PrivateRoute exact path='/dashboard/menu' history={history} component={Menu} />
             <PrivateRoute exact path='/dashboard' history={history} component={Dashboard}/>
-            <Route exact path='/' component={Menu} />
+            <Route exact path='/' component={HomePage} />
             </div>
           </Router>
         </div>

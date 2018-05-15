@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { List, ListItem } from 'material-ui/List'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
 import MenuItem from './MenuItem'
 import Modal from 'react-modal'
@@ -75,6 +76,7 @@ class Menu extends Component {
 
   render(){
     //const { loggedIn, establishment } = this.props
+    console.log(this.props)
     const { category } = this.state
     return(
       <div className="container">
@@ -104,8 +106,10 @@ class Menu extends Component {
                    .map((dish) => {
                      return (
                       <MenuItem
+                        key={dish.id}
                         toggleModalOpen={() => this.toggleModalOpen()}
                         name={dish.name}
+                        id={dish.id}
                         price={dish.price}
                      />)
                    })}
@@ -128,7 +132,7 @@ const ItemModal = (name, description, price) => (
   </div>
 )
 
-/*function mapStateToProps(state) {
+function mapStateToProps(state) {
   const { loggedIn, authentication } = state
   const { establishment } = authentication.establishmentAccess
   return {
@@ -136,6 +140,6 @@ const ItemModal = (name, description, price) => (
     establishment
   }
 
-}*/
+}
 
-export default connect(/*mapStateToProps*/)(Menu)
+export default connect(mapStateToProps)(Menu)

@@ -7,9 +7,12 @@ const initialState = order ? order : {}
 export function order(state = initialState, action) {
   switch(action.type) {
     case menuConstants.ORDER_DISH :
+      console.log('state: ', state)
       return {
         ...state,
-        [id]: action.quantity
+        [action.id]: action.quantity
       }
+    default :
+      return state;
   }
 }

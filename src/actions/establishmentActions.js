@@ -18,6 +18,7 @@ function login(establishmentCode) {
             history.push('/dashboard');
           },
           error => {
+            console.log('error')
             dispatch(failure(error));
             dispatch(alertActions.error(error));
           }

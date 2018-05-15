@@ -1,3 +1,3 @@
 export const menuConstants = {
-  ORDER_DISH = 'MENU_ORDER_DISH'
+  ORDER_DISH: 'MENU_ORDER_DISH'
 }
