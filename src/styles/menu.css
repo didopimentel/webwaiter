@@ -1,9 +1,13 @@
-.container {
-
+.flex-container {
+  padding-top: 10px;
 }
 
 .category-selection-container {
 }
 
-.item-selection-container {
+.item-selection-container-list{
+}
+
+.order-button {
+  margin: auto;
 }

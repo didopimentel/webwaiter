@@ -1,9 +1,8 @@
 export function authHeader() {
     // return authorization header with jwt token
-    let establishment = JSON.parse(localStorage.getItem('establishment'));
-
-    if (establishment && establishment.token) {
-        return { 'Authorization': 'Bearer ' + establishment.token };
+    let token = JSON.parse(localStorage.getItem('token'));
+    if (token) {
+        return { 'Authorization': 'Bearer ' + token };
     } else {
         return {};
     }

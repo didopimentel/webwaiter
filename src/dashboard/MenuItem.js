@@ -2,34 +2,59 @@ import React, { Component } from 'react'
 import Add from 'material-ui/svg-icons/content/add'
 import Remove from 'material-ui/svg-icons/content/remove'
 import { connect } from 'react-redux'
-import requestDish from '../actions/menuActions'
-import styles from '../styles/menu-item.css'
+import { menuActions } from '../actions/menuActions'
+import '../styles/menu-item.css'
 import IconButton from 'material-ui/IconButton'
+import ActionDescription from 'material-ui/svg-icons/action/description'
 import Paper from 'material-ui/Paper'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 
+const styles = {
+  iconButton: {
+    width: 15,
+    height: 15,
+  },
+  iconButtonRoot: {
+    width: 30,
+    height: 30,
+    padding: 5
+  },
+}
+
 class MenuItem extends Component {
 
-  state = {
-    quantity: 0
+  constructor(props) {
+    super(props);
+    this.toggleModalFromChild = this.toggleModalFromChild.bind(this);
+    this.state = {
+      quantity: 0,
+      id: props.id
+    }
   }
 
-  addItem = () => {
-    const { dispatch, id, quantity } = this.props
-    dispatch(requestDish(id, quantity+1))
+
+  toggleModalFromChild () {
+    console.log('state id ',this.state.id)
+    this.props.toggleModalOpen(this.state.id)
   }
 
-  removeItem = () => {
-    const { dispatch, id, quantity } = this.props
+  addItem = (quantity) => {
+    const { dispatch, id } = this.props
+    dispatch(menuActions.requestDish(id, quantity+1))
+  }
+
+  removeItem = (quantity) => {
+    const { dispatch, id } = this.props
     var newQuantity = quantity == 0
                       ? quantity : quantity-1
-    dispatch(requestDish(id, newQuantity))
+    dispatch(menuActions.requestDish(id, newQuantity))
   }
 
   render(){
     const quantity = this.props.quantity ?
                       this.props.quantity
                       : 0
+
     return (
       <Paper className="item-container">
         <div className="description-container">
@@ -43,18 +68,24 @@ class MenuItem extends Component {
         </div>
         <div className="auxiliar-container">
           <IconButton
-            onClick={() => this.addItem()}>
+            style={styles.iconButtonRoot}
+            iconStyle={styles.iconButton}
+            onClick={() => this.addItem(quantity)}>
             <Add/>
           </IconButton>
           <IconButton
-            onClick={() => this.removeItem()}>
+            style={styles.iconButtonRoot}
+            iconStyle={styles.iconButton}
+            onClick={() => this.removeItem(quantity)}>
             <Remove/>
           </IconButton>
         </div>
-        <FloatingActionButton
-          onClick={this.props.toggleModalOpen}
-        >GO
-        </FloatingActionButton>
+        <IconButton
+          mini={true}
+          onClick={() => this.toggleModalFromChild()}
+        >
+        <ActionDescription className="muidocs-icon-action-home"/>
+        </IconButton>
       </Paper>
     )
   }

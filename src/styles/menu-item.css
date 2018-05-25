@@ -1,13 +1,13 @@
 .item-container {
   display: flex;
-  flex-direction: row;
   background: rgba(164, 14, 14, 0.1);
-  padding: 5px;
+  align-items: center;
+  height: 40px;
   margin: 4px;
 }
 
 .description-container {
-  flex: 2;
+  flex: 3;
   padding-left: 10px;
 }
 
@@ -16,6 +16,7 @@
 }
 
 .quantity-container {
+  flex: 1;
 }
 
 .auxiliar-container {

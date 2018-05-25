@@ -3,7 +3,7 @@ import { establishmentService } from '../services/establishmentService'
 
 let establishment = JSON.parse(localStorage.getItem('establishment'));
 const initialState = establishment
-                     ? { loggedInDashBoad: true, establishment }
+                     ? { loggedInDashboard: true, establishment }
                      : {};
 
 export function authentication(state = initialState, action) {
@@ -16,7 +16,7 @@ export function authentication(state = initialState, action) {
     case establishmentConstants.LOGIN_SUCCESS:
       return {
         loggedInDashboard: true,
-        establishmentAccess: action.establishmentAccess
+        establishmentCode: action.establishmentCode.code
       };
     case establishmentConstants.LOGIN_FAILURE:
       return {};

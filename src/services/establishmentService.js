@@ -21,9 +21,10 @@ function login(establishmentCode) {
         })
         .then(response => {
             // login successful if there's a jwt token in the response
-            if (response && response.establishment) {
+            if (response && response.code) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('establishment', JSON.stringify(response.establishment));
+                localStorage.setItem('establishmentCode', JSON.stringify(response.code));
+                localStorage.setItem('loggedInDashboard', true)
             }
             return response;
         });
@@ -47,6 +48,7 @@ function loginTable(establishmentCode, table) {
           if (response && response.token) {
               // store user details and jwt token in local storage to keep user logged in between page refreshes
               localStorage.setItem('token', JSON.stringify(response.token));
+              localStorage.setItem('table', JSON.stringify(table))
           }
           return response;
       });

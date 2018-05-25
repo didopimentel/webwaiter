@@ -5,7 +5,8 @@ import { withRouter } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
 import MenuItem from './MenuItem'
 import Modal from 'react-modal'
-import styles from '../styles/menu.css'
+import '../styles/menu.css'
+import { menuActions } from '../actions/menuActions'
 
 const modalStyle = {
   content : {
@@ -18,47 +19,29 @@ const modalStyle = {
   }
 }
 
-const categories = ['Starters', 'Main Dishes']
-const dishes = [
-  {
-    id: 0,
-    name: 'Bread',
-    price: 10.0,
-    category: 'Starters',
-    description: 'A delicious bread to start off',
-    image: '',
-    options: ''
-  },
-  {
-    id: 1,
-    name: 'Pasta',
-    price: 15.0,
-    category: 'Main Dishes',
-    description: 'This is pasta',
-    image: '',
-    options: ''
-  },
-  {
-    id: 2,
-    name: 'Pizza',
-    price: 30.0,
-    category: 'Main Dishes',
-    description: 'This is a pizza',
-    image: '',
-    options: ''
-  }
-]
-
 class Menu extends Component {
 
   state = {
-    category: 'Starters',
-    modalOpen: false
+    category: '',
+    modalOpen: false,
+    currentDishId: 0
   }
 
-  toggleModalOpen = () => {
+
+  componentDidMount() {
+    const { categories } = this.props
+    const { dispatch } = this.props
+    dispatch(menuActions.getAllDishes())
+    dispatch(menuActions.getAllCategories())
     this.setState({
-      modalOpen: true
+      category: categories[0]
+    })
+  }
+
+  toggleModalOpen = (id) => {
+    this.setState({
+      modalOpen: true,
+      currentDishId: id
     })
   }
 
@@ -75,9 +58,13 @@ class Menu extends Component {
   }
 
   render(){
-    //const { loggedIn, establishment } = this.props
-    console.log(this.props)
-    const { category } = this.state
+    const { dishes } = this.props.dishes
+    const { categories } = this.props.categories
+    const { category, currentDishId } = this.state
+    const currentDish = this.state.modalOpen ?
+                          dishes.filter((_) => _.id == currentDishId)
+                          : {}
+    //const dishOnModal = dishes.filter((_) => _.id == this.state.dishID)
     return(
       <div className="container">
       <Modal
@@ -85,30 +72,31 @@ class Menu extends Component {
         onRequestClose={this.toggleModalClose}
         style={modalStyle}
       >
-      <h2>Dish name</h2>
-
+        Description of the item
+        <h2>{currentDish.dishName}</h2>
+          <h4>{currentDish.description}</h4>
       </Modal>
         <div className="category-selection-container">
           <div>
             <List>
-              {categories.map((category) => (
+              {categories && categories.map((category) => (
                 <ListItem
-                  onClick={(e) => this.handleCategory(e, category)}
-                  primaryText={category}
+                  onClick={(e) => this.handleCategory(e, category.name)}
+                  primaryText={category.name}
                 />
               ))}
             </List>
           </div>
         </div>
         <div className="item-selection-container">
-          <List>
-            {dishes.filter((dish) => dish.category === category)
+          <List className="item-selection-container-list">
+            {dishes && dishes.filter((dish) => dish.category === category)
                    .map((dish) => {
                      return (
                       <MenuItem
                         key={dish.id}
-                        toggleModalOpen={() => this.toggleModalOpen()}
-                        name={dish.name}
+                        toggleModalOpen={this.toggleModalOpen}
+                        name={dish.dishName}
                         id={dish.id}
                         price={dish.price}
                      />)
@@ -133,13 +121,12 @@ const ItemModal = (name, description, price) => (
 )
 
 function mapStateToProps(state) {
-  const { loggedIn, authentication } = state
-  const { establishment } = authentication.establishmentAccess
+  const { tableAuthentication, dishes, categories } = state
   return {
-    loggedIn,
-    establishment
+    loggedInTable: tableAuthentication.loggedInTable,
+    categories,
+    dishes
   }
-
 }
 
 export default connect(mapStateToProps)(Menu)

@@ -12,6 +12,7 @@ import { PrivateRoute } from '../components/PrivateRoute'
 import HomePage from '../homepage/HomePage'
 import Dashboard from '../dashboard/Dashboard'
 import Menu from '../dashboard/Menu'
+import MasterIndex from './MasterIndex'
 
 class Application extends Component {
 
@@ -19,18 +20,17 @@ class Application extends Component {
     super(props);
   }
 
+  loginMaster() {
+    history.push('/staff');
+  }
+
   render(){
     return(
       <div>
-        <AppBar zDepth="2" title="WebWaiter"/>
+        <AppBar zDepth="2" title="WebWaiter"
+          onLeftIconButtonClick={() => this.loginMaster()}
+        />
         <div className="container-main">
-          <Router history={history}>
-            <div>
-            <PrivateRoute exact path='/dashboard/menu' history={history} component={Menu} />
-            <PrivateRoute exact path='/dashboard' history={history} component={Dashboard}/>
-            <Route exact path='/' component={HomePage} />
-            </div>
-          </Router>
         </div>
       </div>
     )

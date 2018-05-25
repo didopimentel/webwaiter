@@ -1,0 +1,31 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tables-container {
+  margin-top: 50px;
+  display: flex;
+  flex-flow: row wrap;
+  padding: 20px;
+}
+
+.table-icon-container {
+  height: 100px;
+  margin: 0 auto;
+  flex-basis: 25%;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 700px) {
+  .table-icon-container {
+    flex-basis: 50%;
+  }
+}
+
+.table-icon {
+  background-image: url("https://png.icons8.com/ios/50/000000/restaurant-table.png");
+  width: 50px;
+  height: 50px;
+}

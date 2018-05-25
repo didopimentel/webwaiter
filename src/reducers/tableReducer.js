@@ -2,7 +2,7 @@ import { tableConstants } from '../constants/tableConstants';
 
 let table = JSON.parse(localStorage.getItem('table'));
 const initialState = table
-                     ? { loggedInTable: true, table }
+                     ? { tableAccess: { loggedInTable: true, table }}
                      : {};
 
 export function tableAuthentication(state = initialState, action) {

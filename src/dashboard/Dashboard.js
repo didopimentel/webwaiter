@@ -27,20 +27,24 @@ class Dashboard extends Component {
     })
   }
 
-  componentWillMount() {
-    if (this.props.tableAuthentication.loggedInTable !== undefined) {
+  componentDidMount() {
+    const { tableAuthentication } = this.props
+    if (tableAuthentication) {
+      if (tableAuthentication.tableAccess)
       this.props.history.push('/dashboard/menu')
     }
   }
 
   submitTable(e) {
     e.preventDefault()
+    const { tableID } = this.state
     const { dispatch, authentication } = this.props
-    dispatch(tableActions.login(this.state.tableID, authentication.establishmentAccess.establishment.code))
+    if (tableID !== ''){
+      dispatch(tableActions.login(authentication.establishmentCode, this.state.tableID))
+    }
   }
 
   render(){
-    console.log(this.props)
     return(
       <div className='container'>
         <div className='logo-container'>
@@ -94,10 +98,11 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state)
   const { authentication, tableAuthentication }  = state;
   return {
-    authentication: authentication,
-    tableAuthentication: tableAuthentication
+    authentication,
+    tableAuthentication
   }
 }
 

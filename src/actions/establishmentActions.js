@@ -18,7 +18,6 @@ function login(establishmentCode) {
             history.push('/dashboard');
           },
           error => {
-            console.log('error')
             dispatch(failure(error));
             dispatch(alertActions.error(error));
           }
@@ -30,10 +29,10 @@ function login(establishmentCode) {
         establishmentCode
       }
     }
-    function success(establishmentAccess) {
+    function success(establishmentCode) {
       return {
         type: establishmentConstants.LOGIN_SUCCESS,
-        establishmentAccess
+        establishmentCode
       }
     }
     function failure(error) {
