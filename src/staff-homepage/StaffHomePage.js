@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
+import { connect } from 'react-redux'
+import { establishmentActions } from '../actions/establishmentActions'
 
 class StaffHomePage extends Component {
 
@@ -9,8 +11,14 @@ class StaffHomePage extends Component {
     password: ''
   }
 
-  loginStaff(){
-
+  loginStaff(e) {
+    e.preventDefault()
+    const { dispatch } = this.props
+    const { staffId, password } = this.state
+    dispatch(establishmentActions.loginStaff(
+      staffId,
+      password
+    ))
   }
 
   staffIdHandler(e){
@@ -50,7 +58,7 @@ class StaffHomePage extends Component {
               className="button"
               label="Login"
               primary="true"
-              onClick={this.loginStaff()}
+              onClick={(e) => this.loginStaff(e)}
               />
           </div>
         </div>
@@ -59,4 +67,4 @@ class StaffHomePage extends Component {
   }
 }
 
-export default StaffHomePage
+export default connect()(StaffHomePage)

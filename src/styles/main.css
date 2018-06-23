@@ -15,8 +15,34 @@
   background-color: white;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 20px 20% 2% 20%;
+  margin-bottom: 5%;
+  border-bottom: 1px solid black;
+}
+
+.header-icon{
+  border: 1px solid gray;
+  border-radius: 7px;
+  background-color: white !important;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.5em;
+  padding: 5px;
+}
+
+.header-icon:hover {
+  cursor:pointer;
+}
+
 @media screen and (max-width: 540px){
   .container-fluid{
     padding-bottom: 2em;
+  }
+  .header {
+    padding: 20px 10% 10% 10%;
   }
 }

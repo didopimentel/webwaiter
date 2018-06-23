@@ -1,0 +1,87 @@
+.outer-container {
+  margin: 10px 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.centralize-container {
+  margin: 0 auto;
+}
+
+.padding-top {
+  padding-top: 25px;
+}
+
+table {
+  border-collapse: separate !important;
+  border-spacing: 7px;
+  border: 1px solid blue;
+  border-radius: 6px;
+  text-align: center;
+  width: 100%;
+  height:100%;
+}
+
+tr {
+  border-bottom: 1px solid black;
+  width: 100%;
+}
+
+.child-table {
+  border: none;
+}
+
+.messages-table {
+  margin-bottom: 20px;
+}
+
+.messages-table tr:nth-child(even){
+  background-color: #dfdcf2;
+}
+
+.messages-table tr:nth-child(odd){
+  background-color: #bcb9ce;
+}
+
+.messages-table tr:hover {
+    background-color: black;
+    cursor: pointer;
+  }
+
+th {
+  background-color: #2e15d8;
+  border-radius: 6px;
+}
+
+.status-div {
+  width: auto;
+}
+
+.ready-item {
+  background-color: green;
+}
+
+.notready-item {
+  background-color: red;
+}
+
+.rounded-icon {
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 700px) {
+  .outer-container {
+    margin: 2px;
+    font-size: 0.8em;
+  }
+  table {
+    border-spacing: 2px;
+  }
+  th, td {
+    padding: 2px;
+  }
+  td {
+    margin: 20px;
+  }
+}

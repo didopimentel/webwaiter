@@ -2,10 +2,53 @@ import { establishmentConstants } from '../constants/establishmentConstants';
 import { establishmentService } from '../services/establishmentService';
 import { alertActions } from './alertActions';
 import { history } from '../helpers/history'
+import { add } from 'react-redux-permissions'
 
 export const establishmentActions = {
+  loginStaff,
   login,
   logout
+}
+
+function loginStaff(username, password) {
+  return dispatch => {
+    establishmentService.loginStaff(username, password)
+      .then(
+        response => {
+          dispatch(success(response.token, response.role));
+          dispatch(add(response.role))
+          history.push('/staff/dashboard');
+        },
+        error => {
+          let message;
+          if(error == 500) {
+            message = 'Could not reach the server'
+          }
+          else {
+            message = error
+          }
+          dispatch(failure(error))
+          dispatch(alertActions.error(error));
+        }
+      )
+  }
+  function request() {
+    return {
+      type: establishmentConstants.STAFF_LOGIN_REQUEST,
+    }
+  }
+  function success(token, role) {
+    return {
+      type: establishmentConstants.STAFF_LOGIN_SUCCESS,
+      token
+    }
+  }
+  function failure(error) {
+    return {
+      type: establishmentConstants.STAFF_LOGIN_FAILURE,
+      error
+    }
+  }
 }
 
 function login(establishmentCode) {
@@ -14,7 +57,7 @@ function login(establishmentCode) {
       establishmentService.login(establishmentCode)
         .then(
           response => {
-            dispatch(success(response));
+            dispatch(success(response.token));
             history.push('/dashboard');
           },
           error => {
@@ -29,10 +72,10 @@ function login(establishmentCode) {
         establishmentCode
       }
     }
-    function success(establishmentCode) {
+    function success(token) {
       return {
         type: establishmentConstants.LOGIN_SUCCESS,
-        establishmentCode
+        token
       }
     }
     function failure(error) {

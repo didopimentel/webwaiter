@@ -1,10 +1,30 @@
 import { authHeader } from '../helpers/authHeader';
+import axios from 'axios'
 
 export const establishmentService = {
+    loginStaff,
     login,
     loginTable,
     logout
 };
+
+function loginStaff(username, password) {
+  return axios.post('http://localhost:3001/api/establishments/authenticate-staff', {
+    username,
+    password
+  })
+    .then((response) => {
+      localStorage.setItem('token', JSON.stringify(response.data.token))
+      localStorage.setItem('role', JSON.stringify(response.data.role))
+      return response.data
+    })
+    .catch((error) => {
+      if (error.response){
+        return Promise.reject(error.response.status)
+      }
+      return Promise.reject(500)
+    })
+}
 
 function login(establishmentCode) {
     const requestOptions = {

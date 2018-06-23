@@ -14,8 +14,8 @@ import { store } from './helpers/store'
 const muiTheme = getMuiTheme({
   palette: {
     textColor: Colors.darkBlack,
-    primary1Color: Colors.red600,
-    accent1Color: Colors.red50,
+    primary1Color: Colors.blue600,
+    accent1Color: Colors.blue50,
     pickerHeaderColor: Colors.darkBlack,
     alternateTextColor: Colors.fullWhite
   },
