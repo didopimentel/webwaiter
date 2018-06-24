@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { ItemModal } from '../components/ItemModal'
 import { Loading } from '../components/Loading'
+import { menuActions } from '../actions/menuActions'
 
 const modalStyle = {
   content : {
@@ -63,10 +64,14 @@ class StaffMenu extends Component {
     this.state = {
       category: 'Main Food',
       modalOpen: false,
-      currentDishId: 0,
-      isRequesting: false
+      currentDishId: 0
     }
     this.handleCategory = this.handleCategory.bind(this)
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(menuActions.getAllDishes())
   }
 
   handleCategory (e, category) {
@@ -89,7 +94,8 @@ class StaffMenu extends Component {
   }
 
   render() {
-    const { currentDishId, modalOpen, category, isRequesting } = this.state
+    const { currentDishId, modalOpen, category } = this.state
+    const { isRequesting } = this.props
     const currentDish = modalOpen ?
                           dishes.filter((_) => _.id == currentDishId)
                                 .reduce((obj, item) => {
@@ -122,4 +128,12 @@ class StaffMenu extends Component {
   }
 }
 
-export default connect()(StaffMenu)
+function mapStateToProps(state) {
+  const { dishes, requesting } = state.dishes
+  return {
+    menu: dishes,
+    isRequesting: requesting
+  }
+}
+
+export default connect(mapStateToProps)(StaffMenu)

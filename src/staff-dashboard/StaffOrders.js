@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import './styles/staff-orders.css'
 import * as data from './test-data'
 import ActionDone from 'material-ui/svg-icons/action/done'
@@ -59,9 +60,10 @@ class StaffOrders extends Component {
             <PlacesRoomService style={{width: 50, height: 50}}/>
           </div>
           <table>
+            <tbody>
             <tr>
               {data.titles.map((header) => (
-                <th id={header}>{header}</th>
+                <th key={header}>{header}</th>
               ))}
             </tr>
             {data.tables.map((table) => (
@@ -71,14 +73,17 @@ class StaffOrders extends Component {
                 </td>
                 <td>
                   <table className="child-table">
+                    <tbody>
                     {table.items.map((item) => (
                       <tr>
                       </tr>
                     ))}
+                    </tbody>
                   </table>
                 </td>
                 <td>
                   <table className="child-table">
+                    <tbody>
                     {table.items.map((item) => (
                       <tr className="inside-data">
                         <td>
@@ -88,10 +93,12 @@ class StaffOrders extends Component {
                         </td>
                       </tr>
                     ))}
+                    </tbody>
                   </table>
                 </td>
                 <td>
                   <table className="child-table">
+                    <tbody>
                     {table.items.map((item) => (
                       <tr>
                         <td>
@@ -101,6 +108,7 @@ class StaffOrders extends Component {
                         </td>
                       </tr>
                     ))}
+                    </tbody>
                   </table>
                 </td>
                 <td>
@@ -121,23 +129,30 @@ class StaffOrders extends Component {
                 </td>
               </tr>
             ))}
+            </tbody>
           </table>
           <div className="centralize-container padding-top">
             <CommunicationChat style={{width: 50, height: 50}}/>
           </div>
           <table className="messages-table">
-            <th>Message</th>
-            <th>Station</th>
-            <th>Content</th>
-            <th>Status</th>
-            {data.messages.map((message) => (
-              <tr onClick={() => this.showMessage(message)}>
-                <td>{message.direction}</td>
-                <td>{message.station}</td>
-                <td>{message.content}</td>
-                <td>{message.status}</td>
+            <thead>
+              <tr>
+                <th>Message</th>
+                <th>Station</th>
+                <th>Content</th>
+                <th>Status</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
+              {data.messages.map((message) => (
+                <tr onClick={() => this.showMessage(message)}>
+                  <td>{message.direction}</td>
+                  <td>{message.station}</td>
+                  <td>{message.content}</td>
+                  <td>{message.status}</td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>
@@ -145,4 +160,4 @@ class StaffOrders extends Component {
   }
 }
 
-export default StaffOrders
+export default connect()(StaffOrders)

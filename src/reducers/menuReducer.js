@@ -23,12 +23,10 @@ export function dishes(state = initialStateMenu, action){
   switch(action.type) {
     case menuConstants.GET_ALL_DISHES_REQUEST :
       return {
-        ...state,
         requesting: action.requesting
       }
     case menuConstants.GET_ALL_DISHES_SUCCESS :
       return {
-        ...state,
         dishes: action.dishes
       }
     case menuConstants.GET_ALL_DISHES_FAILURE :
