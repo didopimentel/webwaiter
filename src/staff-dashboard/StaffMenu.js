@@ -32,6 +32,7 @@ const dishes = [
     price: 50,
     category: "Main Food",
     description: "This is a bread",
+    imageUrl: "https://tabledb.s3.amazonaws.com/hgwlandingpage/promotion/57eb38c3e4b04d135dfee153/morganfield_20170601_3840.jpg",
     ingredients: [
       "Bread",
       "Butter",
@@ -44,6 +45,7 @@ const dishes = [
     price: 25,
     category: "Main Food",
     description: "This is pasta",
+    imageUrl: "https://tabledb.s3.amazonaws.com/hgwlandingpage/promotion/57eb38c3e4b04d135dfee153/morganfield_20170601_3840.jpg",
     ingredients: [
       "Pasta",
       "Butter",

@@ -11,10 +11,10 @@ const style = {
     left                  : '50%',
     right                 : 'auto',
     bottom                : 'auto',
-    marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)',
-    width: '500px',
-    backgroundColor: 'lightblue'
+    backgroundColor: 'lightblue',
+    borderColor: 'black',
+    borderWidth: '1px'
   }
 }
 
@@ -31,7 +31,17 @@ const modalData = {
   },
   body: {
     fontSize: '1em'
+  },
+  footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderColor: 'black',
+    borderWidth: '1px'
+  },
+  footerItems: {
+    padding: '15%'
   }
+
 }
 
 export const ItemModal = (props) => {
@@ -45,6 +55,8 @@ export const ItemModal = (props) => {
     <div style={modalData.content}>
       <div style={modalData.header}>
         {currentDish.dishName}
+        <Divider/>
+        <img src={currentDish.imageUrl} height={300} width={350} style={{padding:10}}/>
       </div>
       <Divider/>
       <div style={modalData.body}>
@@ -52,7 +64,8 @@ export const ItemModal = (props) => {
       </div>
       <Divider/>
       <div style={modalData.footer}>
-        <List>
+        <div style={modalData.footerItems}>Options: </div>
+        <List style={modalData.footerItems}>
           <ListItem leftCheckbox={<Checkbox/>}>Rare</ListItem>
           <ListItem leftCheckbox={<Checkbox/>}>Medium</ListItem>
           <ListItem leftCheckbox={<Checkbox/>}>Well Done</ListItem>
