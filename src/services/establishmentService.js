@@ -32,7 +32,7 @@ function login(establishmentCode) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ establishmentCode })
     };
-    return fetch('http://localhost:3001/api/authentication', requestOptions)
+    return fetch('http://localhost:3001/api/authentication/loginEstablishment', requestOptions)
         .then(response => {
             if (!response.ok) {
                 return Promise.reject(response.statusText);
@@ -56,7 +56,7 @@ function loginTable(establishmentCode, table) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ establishmentCode, table })
   };
-  return fetch('http://localhost:3001/api/authenticate-table', requestOptions)
+  return fetch('http://localhost:3001/api/authentication/loginTableAnonymously', requestOptions)
       .then(response => {
           if (!response.ok) {
               return Promise.reject(response.statusText);
@@ -68,7 +68,6 @@ function loginTable(establishmentCode, table) {
           if (response && response.token) {
               // store user details and jwt token in local storage to keep user logged in between page refreshes
               localStorage.setItem('token', JSON.stringify(response.token));
-              localStorage.setItem('table', JSON.stringify(table))
           }
           return response;
       });

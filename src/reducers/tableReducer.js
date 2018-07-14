@@ -1,8 +1,8 @@
 import { tableConstants } from '../constants/tableConstants';
 
-let table = JSON.parse(localStorage.getItem('table'));
-const initialState = table
-                     ? { tableAccess: { loggedInTable: true, table }}
+let token = JSON.parse(localStorage.getItem('token'));
+const initialState = token
+                     ? { loggedInTable: true, token: token }
                      : {};
 
 export function tableAuthentication(state = initialState, action) {
@@ -15,7 +15,7 @@ export function tableAuthentication(state = initialState, action) {
     case tableConstants.LOGIN_SUCCESS:
       return {
         loggedInTable: true,
-        tableAccess: action.tableAccess
+        token: action.token
       };
     case tableConstants.LOGIN_FAILURE:
       return {};

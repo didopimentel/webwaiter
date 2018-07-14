@@ -1,16 +1,13 @@
 import { establishmentConstants } from '../constants/establishmentConstants';
 import { establishmentService } from '../services/establishmentService'
 
-let token = JSON.parse(localStorage.getItem('token'));
+let establishmentCode = JSON.parse(localStorage.getItem('establishmentCode'));
 let role = JSON.parse(localStorage.getItem('role'))
 let initialState = {}
-if (token) {
-  initialState = role ? {
-    loggedIn: true,
-    token
-  } : {
+if (establishmentCode) {
+  initialState = {
     loggedInDashboard: true,
-    token
+    establishmentCode
   }
 }
 
@@ -24,7 +21,7 @@ export function authentication(state = initialState, action) {
     case establishmentConstants.LOGIN_SUCCESS:
       return {
         loggedInDashboard: true,
-        token: action.token
+        establishmentCode: action.establishmentCode
       };
     case establishmentConstants.LOGIN_FAILURE:
       return {};

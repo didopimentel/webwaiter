@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import Add from 'material-ui/svg-icons/content/add'
 import Remove from 'material-ui/svg-icons/content/remove'
+import './styles/menu-item.css'
 import { connect } from 'react-redux'
 import { menuActions } from '../actions/menuActions'
-import '../styles/menu-item.css'
+import { TableRowColumn, TableRow } from 'material-ui/Table'
 import IconButton from 'material-ui/IconButton'
 import ActionDescription from 'material-ui/svg-icons/action/description'
 import Paper from 'material-ui/Paper'
@@ -50,23 +51,28 @@ class MenuItem extends Component {
     dispatch(menuActions.requestDish(id, newQuantity))
   }
 
-  render(){
-    const quantity = this.props.quantity ?
-                      this.props.quantity
-                      : 0
+  test() {
+    console.log('teste')
+  }
 
+  render(){
+    const { order } = this.props
+    const quantity =  order ?
+                      order.quantity
+                      : 0
     return (
-      <Paper className="item-container">
-        <div className="description-container">
+      <TableRow
+        onClick={() => this.test()} className="hover-effect" >
+        <TableRowColumn className="expand-column">
           {this.props.name}
-        </div>
-        <div className="price-container">
+        </TableRowColumn>
+        <TableRowColumn>
           R${this.props.price}
-        </div>
-        <div className="quantity-container">
+        </TableRowColumn>
+        <TableRowColumn className="fixed-width">
           {quantity}
-        </div>
-        <div className="auxiliar-container">
+        </TableRowColumn>
+        <TableRowColumn>
           <IconButton
             style={styles.iconButtonRoot}
             iconStyle={styles.iconButton}
@@ -79,22 +85,28 @@ class MenuItem extends Component {
             onClick={() => this.removeItem(quantity)}>
             <Remove/>
           </IconButton>
-        </div>
-        <IconButton
-          mini={true}
-          onClick={() => this.toggleModalFromChild()}
-        >
-        <ActionDescription className="muidocs-icon-action-home"/>
-        </IconButton>
-      </Paper>
+        </TableRowColumn>
+      </TableRow>
     )
   }
 }
 
+<TableRowColumn>
+  <IconButton
+    mini={true}
+    onClick={() => this.toggleModalFromChild()}
+  >
+    <ActionDescription className="muidocs-icon-action-home"/>
+  </IconButton>
+</TableRowColumn>
+
 function mapStateToProps(state, ownProps) {
   const { order } = state
-  return order ? {
-    quantity: order[ownProps.id]
+  const thisOrder = order.filter((order) => order.item_id == ownProps.id)
+  return (thisOrder.length > 0) ? {
+    order: thisOrder.reduce((obj, item) => {
+                             return item
+                           })
   } : false
 }
 

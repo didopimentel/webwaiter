@@ -3,10 +3,13 @@ import { List, ListItem } from 'material-ui/List'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton'
-import MenuItem from './MenuItem'
+import { ItemModal } from '../components/ItemModal'
 import Modal from 'react-modal'
 import '../styles/menu.css'
+import { MenuOfItems } from '../components/MenuOfItems'
 import { menuActions } from '../actions/menuActions'
+import { orderActions } from '../actions/orderActions'
+import { Loading } from '../components/Loading'
 
 const modalStyle = {
   content : {
@@ -21,10 +24,14 @@ const modalStyle = {
 
 class Menu extends Component {
 
-  state = {
-    category: '',
-    modalOpen: false,
-    currentDishId: 0
+  constructor(props) {
+    super(props)
+    this.state = {
+      category: '',
+      modalOpen: false,
+      currentDishId: ''
+    }
+    this.handleCategory = this.handleCategory.bind(this)
   }
 
 
@@ -34,7 +41,7 @@ class Menu extends Component {
     dispatch(menuActions.getAllDishes())
     dispatch(menuActions.getAllCategories())
     this.setState({
-      category: categories[0]
+      category: categories ? categories.categories : ''
     })
   }
 
@@ -57,6 +64,13 @@ class Menu extends Component {
     })
   }
 
+  orderItems = () => {
+    const { dispatch, order } = this.props;
+    if (order) {
+      dispatch(orderActions.orderItems(order, ''))
+    }
+  }
+
   render(){
     const { dishes } = this.props.dishes
     const { categories } = this.props.categories
@@ -64,68 +78,43 @@ class Menu extends Component {
     const currentDish = this.state.modalOpen ?
                           dishes.filter((_) => _.id == currentDishId)
                           : {}
-    //const dishOnModal = dishes.filter((_) => _.id == this.state.dishID)
-    return(
+
+    if ( this.props.dishes.requesting || this.props.categories.requesting ) {
+      return   <Loading type="spin" color="lightblue"/>
+    }
+
+    return (
       <div className="container">
-      <Modal
-        isOpen={this.state.modalOpen}
-        onRequestClose={this.toggleModalClose}
-        style={modalStyle}
-      >
-        Description of the item
-        <h2>{currentDish.dishName}</h2>
-          <h4>{currentDish.description}</h4>
-      </Modal>
-        <div className="category-selection-container">
-          <div>
-            <List>
-              {categories && categories.map((category) => (
-                <ListItem
-                  onClick={(e) => this.handleCategory(e, category.name)}
-                  primaryText={category.name}
-                />
-              ))}
-            </List>
-          </div>
-        </div>
-        <div className="item-selection-container">
-          <List className="item-selection-container-list">
-            {dishes && dishes.filter((dish) => dish.category === category)
-                   .map((dish) => {
-                     return (
-                      <MenuItem
-                        key={dish.id}
-                        toggleModalOpen={this.toggleModalOpen}
-                        name={dish.dishName}
-                        id={dish.id}
-                        price={dish.price}
-                     />)
-                   })}
-          </List>
-        </div>
+        <ItemModal
+          modalOpen={this.state.modalOpen}
+          toggleModalClose={this.toggleModalClose}
+          currentDish={currentDish}
+        />
+        <MenuOfItems
+          category={category}
+          handleCategory={this.handleCategory}
+          toggleModalOpen={this.toggleModalOpen}
+          owner="customer"
+          categories={categories}
+          dishes={dishes}
+        />
         <RaisedButton
           label="Order"
           primary={true}
+          onClick={this.orderItems}
         />
       </div>
     )
   }
 }
 
-const ItemModal = (name, description, price) => (
-  <div>
-    {name}
-    {description}
-    {price}
-  </div>
-)
-
 function mapStateToProps(state) {
-  const { tableAuthentication, dishes, categories } = state
+  const { tableAuthentication, dishes, categories, order } = state
   return {
     loggedInTable: tableAuthentication.loggedInTable,
     categories,
-    dishes
+    dishes,
+    order
   }
 }
 

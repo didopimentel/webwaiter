@@ -8,8 +8,8 @@ export const menuActions = {
   getAllCategories
 }
 
-function requestDish(id, quantity) {
-  let currentOrders = JSON.parse(localStorage.getItem('order'))
+function requestDish(id, quantity, options) {
+/*  let currentOrders = JSON.parse(localStorage.getItem('order'))
   if (currentOrders) {
     if (currentOrders[id]) {
       currentOrders[id] = quantity
@@ -20,11 +20,41 @@ function requestDish(id, quantity) {
   else {
     currentOrders = {[id]: quantity}
   }
-  localStorage.setItem('order', JSON.stringify(currentOrders))
+  localStorage.setItem('order', JSON.stringify(currentOrders))*/
+  let currentOrders = localStorage.getItem('order')
+                        ? JSON.parse(localStorage.getItem('order'))
+                        : []
+  let checkUpdated = false
+  const item_id = id
+  var updatedOrders
+  if (currentOrders.length > 0) {
+    updatedOrders = currentOrders.map((item) => {
+      if (item.item_id === item_id) {
+        checkUpdated = true
+        return {
+          ...item,
+          quantity,
+          options
+        }
+      }
+      return { ...item }
+    })
+  }
+  if (!checkUpdated) {
+    const o = {
+      item_id: item_id,
+      quantity: quantity,
+      options: options
+    }
+    currentOrders.push(o)
+    updatedOrders = currentOrders
+  }
+  localStorage.setItem('order', JSON.stringify(updatedOrders))
   return {
     type: menuConstants.ORDER_DISH,
     id,
-    quantity
+    quantity,
+    options
   }
 }
 
@@ -52,6 +82,7 @@ function getAllDishes() {
     function success(dishes) {
       return {
         type: menuConstants.GET_ALL_DISHES_SUCCESS,
+        requesting: false,
         dishes
       }
     }
@@ -88,6 +119,7 @@ function getAllCategories() {
     function success(categories) {
       return {
         type: menuConstants.GET_ALL_CATEGORIES_SUCCESS,
+        requesting: false,
         categories
       }
     }

@@ -57,7 +57,7 @@ function login(establishmentCode) {
       establishmentService.login(establishmentCode)
         .then(
           response => {
-            dispatch(success(response.token));
+            dispatch(success(response.code));
             history.push('/dashboard');
           },
           error => {
@@ -72,10 +72,10 @@ function login(establishmentCode) {
         establishmentCode
       }
     }
-    function success(token) {
+    function success(establishmentCode) {
       return {
         type: establishmentConstants.LOGIN_SUCCESS,
-        token
+        establishmentCode
       }
     }
     function failure(error) {

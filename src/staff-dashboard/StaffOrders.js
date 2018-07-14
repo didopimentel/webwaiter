@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './styles/staff-orders.css'
-import * as data from './test-data'
 import ActionDone from 'material-ui/svg-icons/action/done'
+import * as data from './test-data'
 import ActionDoneAll from 'material-ui/svg-icons/action/done-all'
 import PlacesRoomService from 'material-ui/svg-icons/places/room-service'
 import CommunicationChat from 'material-ui/svg-icons/communication/chat'
 import Modal from 'react-modal'
+import { orderActions } from '../actions/orderActions'
+import { Loading } from '../components/Loading'
 
 const modalStyle = {
   content : {
@@ -19,11 +21,25 @@ const modalStyle = {
   }
 }
 
+const titles = [
+  'Table',
+  'Order',
+  'Items',
+  'Item Status',
+  'Pick-up Ready',
+  'Served',
+]
+
 class StaffOrders extends Component {
 
   state = {
     modalOpen: false,
     viewingMessage: {}
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props
+    dispatch(orderActions.getOrdersPerTable())
   }
 
   toggleModalClose() {
@@ -47,6 +63,11 @@ class StaffOrders extends Component {
 
   render() {
     const { viewingMessage } = this.state ? this.state : {}
+    const { requestingOrders, ordersPerTable } = this.props.orders
+    if (requestingOrders)
+      return (
+        <Loading type="spin" color="lightblue"/>
+      )
     return (
       <div>
         <div className="outer-container">
@@ -59,14 +80,14 @@ class StaffOrders extends Component {
           <div className="centralize-container">
             <PlacesRoomService style={{width: 50, height: 50}}/>
           </div>
-          <table>
+          <table className="order-table">
             <tbody>
             <tr>
-              {data.titles.map((header) => (
+              {titles.map((header) => (
                 <th key={header}>{header}</th>
               ))}
             </tr>
-            {data.tables.map((table) => (
+            {ordersPerTable.map((table) => (
               <tr>
                 <td style={{backgroundColor: 'gray'}}>
                   {table.number}
@@ -82,7 +103,7 @@ class StaffOrders extends Component {
                   </table>
                 </td>
                 <td>
-                  <table className="child-table">
+                  <table className="order-table child-table">
                     <tbody>
                     {table.items.map((item) => (
                       <tr className="inside-data">
@@ -97,12 +118,12 @@ class StaffOrders extends Component {
                   </table>
                 </td>
                 <td>
-                  <table className="child-table">
+                  <table className="order-table child-table">
                     <tbody>
                     {table.items.map((item) => (
                       <tr>
                         <td>
-                          <div className={(item.status ? 'ready-item' : 'notready-item')}>
+                          <div className={((item.status !== 'Queue') ? 'ready-item' : 'notready-item')}>
                           &nbsp;
                           </div>
                         </td>
@@ -134,7 +155,7 @@ class StaffOrders extends Component {
           <div className="centralize-container padding-top">
             <CommunicationChat style={{width: 50, height: 50}}/>
           </div>
-          <table className="messages-table">
+          <table className="order-table messages-table">
             <thead>
               <tr>
                 <th>Message</th>
@@ -160,4 +181,11 @@ class StaffOrders extends Component {
   }
 }
 
-export default connect()(StaffOrders)
+function mapStateToProps(state) {
+  console.log(state)
+  return {
+    orders: state.orders
+  }
+}
+
+export default connect(mapStateToProps)(StaffOrders)

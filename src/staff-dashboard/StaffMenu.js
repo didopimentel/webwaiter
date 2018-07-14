@@ -5,6 +5,12 @@ import Modal from 'react-modal'
 import { ItemModal } from '../components/ItemModal'
 import { Loading } from '../components/Loading'
 import { menuActions } from '../actions/menuActions'
+import { orderActions } from '../actions/orderActions'
+import { staffActions } from '../actions/staffActions'
+import FlatButton  from 'material-ui/FlatButton'
+import { Popover } from 'material-ui/Popover'
+import { Menu, MenuItem } from 'material-ui/Menu'
+import TextField  from 'material-ui/TextField'
 
 const modalStyle = {
   content : {
@@ -64,19 +70,38 @@ class StaffMenu extends Component {
     this.state = {
       category: 'Main Food',
       modalOpen: false,
-      currentDishId: 0
+      currentDishId: '',
+      popoverOpen: false,
+      tableNumber: ''
     }
     this.handleCategory = this.handleCategory.bind(this)
+    this.handleOrderButton = this.handleOrderButton.bind(this)
   }
 
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(menuActions.getAllDishes())
+    dispatch(staffActions.getAllTables())
   }
+
 
   handleCategory (e, category) {
     this.setState({
       category
+    })
+  }
+
+  handleOrderButton = (event) => {
+    event.preventDefault();
+    this.setState({
+      popoverOpen: true,
+      anchorEl: event.currentTarget
+    })
+  }
+
+  togglePopoverClose = (event) => {
+    this.setState({
+      popoverOpen: false
     })
   }
 
@@ -93,9 +118,28 @@ class StaffMenu extends Component {
     })
   }
 
+  handleTableText = (event) => {
+    event.preventDefault()
+    this.setState({
+      tableNumber: event.target.value
+    })
+  }
+
+  orderItems = (event) => {
+    event.preventDefault()
+    const { dispatch, order, tables } = this.props
+    const tableID = tables.filter((table) => table.number == this.state.tableNumber)[0]._id
+    if (order) {
+      dispatch(orderActions.orderItems(order, tableID))
+    }
+    this.setState({
+      popoverOpen: false
+    })
+  }
+
   render() {
     const { currentDishId, modalOpen, category } = this.state
-    const { isRequesting } = this.props
+    const { isRequesting, orders } = this.props
     const currentDish = modalOpen ?
                           dishes.filter((_) => _.id == currentDishId)
                                 .reduce((obj, item) => {
@@ -107,7 +151,6 @@ class StaffMenu extends Component {
       return (
         <Loading type="spin" color="lightblue"/>
       )
-
     return (
       <div>
         <ItemModal
@@ -123,6 +166,32 @@ class StaffMenu extends Component {
           categories={categories}
           dishes={dishes}
         />
+        <div style={{margin:'0 50%'}}>
+        <Popover
+          open={this.state.popoverOpen}
+          anchorEl={this.state.anchorEl}
+          canAutoPosition={true}
+          anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+          targetOrigin={{horizontal: 'right', vertical: 'top'}}
+          onRequestClose={this.togglePopoverClose}
+        >
+          <div style={[{width: 150}, {padding:20}]}>
+            <TextField
+              onChange={(e) => this.handleTableText(e)}
+              style={{width: 150}}
+              fullWidth= {false}
+              hintText="Table Number" />
+            <FlatButton
+              label="Order Now!"
+              onClick={this.orderItems}
+            />
+          </div>
+        </Popover>
+        <FlatButton
+          label="Order"
+          onClick={this.handleOrderButton}
+        />
+        </div>
       </div>
     )
   }
@@ -130,7 +199,11 @@ class StaffMenu extends Component {
 
 function mapStateToProps(state) {
   const { dishes, requesting } = state.dishes
+  const { order, tables, orders } = state
   return {
+    orders: orders,
+    tables: tables.tables,
+    order: order,
     menu: dishes,
     isRequesting: requesting
   }

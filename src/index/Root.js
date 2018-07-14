@@ -12,6 +12,7 @@ import Dashboard from '../dashboard/Dashboard'
 import Application from '../containers/Application'
 import { PrivateRoute } from '../components/PrivateRoute'
 import HomePage from '../homepage/HomePage'
+import Index from '../homepage/Index'
 import Menu from '../dashboard/Menu'
 import StaffHomePage from '../staff-homepage/StaffHomePage'
 import StaffDashboard from '../staff-dashboard/StaffDashboard'
@@ -20,13 +21,14 @@ import StaffMenu from '../staff-dashboard/StaffMenu'
 import FontIcon from 'material-ui/FontIcon'
 import Permissions from 'react-redux-permissions'
 import { DisabledRoute } from '../components/DisabledRoute'
+import ActionReceipt from 'material-ui/svg-icons/action/receipt'
 
 const Root = () => {
   return (
     <Router history={history}>
       <div>
         <Application />
-        <Route exact path='/' component={HomePage} />
+        <Route exact path='/' component={Index} />
         <Route path='/staff' render={(props) => (
           <div className="header">
             <FontIcon className="table-icon header-icon" onClick={() => props.history.push('/staff/dashboard/')}/>
@@ -38,6 +40,12 @@ const Root = () => {
           <Route path='/staff/dashboard' component={StaffDashboard} />
           <Route path='/staff/menu' component={StaffMenu} />
           <Route path='/staff/orders' component={StaffOrders} />
+        <Route path="/dashboard/(menu|checkout)" render={(props) => (
+          <div className="header">
+            <div className="header-icon" onClick={() => props.history.push('/dashboard/menu')}>MENU</div>
+            <ActionReceipt className="header-icon" style={{width:50, height:50}}/>
+          </div>
+        )}/>
         <PrivateRoute path='/dashboard/menu' history={history} component={Menu} />
         <PrivateRoute exact path='/dashboard' history={history} component={Dashboard}/>
       </div>

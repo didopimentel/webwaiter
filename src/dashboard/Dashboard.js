@@ -98,7 +98,6 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state)
   const { authentication, tableAuthentication }  = state;
   return {
     authentication,

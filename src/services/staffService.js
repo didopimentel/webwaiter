@@ -30,10 +30,9 @@ function getAllOrders() {
 
 function getAllTables() {
   const header = authHeader()
-
   return axios.get(
     'http://localhost:3001/api/employees/tables',
-     {headers: header}
+     { headers: header }
     )
     .then(response => {
       return response.data
@@ -48,7 +47,7 @@ function deactivateCall(number) {
   const header = authHeader()
 
   return axios.patch(
-    'http://localhost:3001/api/employees/table/' + number,
+    'http://localhost:3001/api/tables/' + number,
      {headers: header}
     )
     .then(response => {

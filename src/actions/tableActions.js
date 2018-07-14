@@ -11,6 +11,7 @@ export const tableActions = {
 function login(establishmentCode, table) {
     return dispatch => {
       dispatch(request(table))
+      console.log(establishmentCode)
       establishmentService.loginTable(establishmentCode, table)
         .then(
           response => {
@@ -29,10 +30,10 @@ function login(establishmentCode, table) {
         table
       }
     }
-    function success(tableAccess) {
+    function success(token) {
       return {
         type: tableConstants.LOGIN_SUCCESS,
-        tableAccess
+        token
       }
     }
     function failure(error) {

@@ -1,0 +1,17 @@
+.hover-effect:hover{
+  background-color: gray;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+  .expand-column {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .fixed-width {
+    width: 20% !important;
+    text-align: center !important;
+    margin-left: 70% !important;
+  }
+}
