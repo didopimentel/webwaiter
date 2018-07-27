@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { List, ListItem } from 'material-ui/List'
+import { List, ListItem } from '@material-ui/core/List'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
-import RaisedButton from 'material-ui/RaisedButton'
+import Button from '@material-ui/core/Button'
 import { ItemModal } from '../components/ItemModal'
 import Modal from 'react-modal'
 import '../styles/menu.css'
@@ -40,9 +40,6 @@ class Menu extends Component {
     const { dispatch } = this.props
     dispatch(menuActions.getAllDishes())
     dispatch(menuActions.getAllCategories())
-    this.setState({
-      category: categories ? categories.categories : ''
-    })
   }
 
   toggleModalOpen = (id) => {
@@ -83,6 +80,12 @@ class Menu extends Component {
       return   <Loading type="spin" color="lightblue"/>
     }
 
+    if (category == '' && categories) {
+      this.setState({
+        category: categories[0].name
+      })
+    }
+
     return (
       <div className="container">
         <ItemModal
@@ -98,11 +101,16 @@ class Menu extends Component {
           categories={categories}
           dishes={dishes}
         />
-        <RaisedButton
-          label="Order"
-          primary={true}
-          onClick={this.orderItems}
-        />
+        <div className='row mt-3'>
+          <div className="col-12 text-center">
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={this.orderItems}
+            > Order
+            </Button>
+          </div>
+        </div>
       </div>
     )
   }

@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './styles/staff-orders.css'
-import ActionDone from 'material-ui/svg-icons/action/done'
+import SvgIcon from '@material-ui/core/SvgIcon'
 import * as data from './test-data'
-import ActionDoneAll from 'material-ui/svg-icons/action/done-all'
-import PlacesRoomService from 'material-ui/svg-icons/places/room-service'
-import CommunicationChat from 'material-ui/svg-icons/communication/chat'
 import Modal from 'react-modal'
 import { orderActions } from '../actions/orderActions'
 import { Loading } from '../components/Loading'
@@ -78,7 +75,7 @@ class StaffOrders extends Component {
         > {viewingMessage.station + " sent: "}{viewingMessage.content}
         </Modal>
           <div className="centralize-container">
-            <PlacesRoomService style={{width: 50, height: 50}}/>
+            <SvgIcon style={{width: 50, height: 50}}/>
           </div>
           <table className="order-table">
             <tbody>
@@ -136,7 +133,7 @@ class StaffOrders extends Component {
                   {(table.items
                               .filter((_) => _.status === false)
                               .length == 0)
-                              ? <ActionDone />
+                              ? <SvgIcon />
                               : false
                   }
                 </td>
@@ -144,7 +141,7 @@ class StaffOrders extends Component {
                   {(table.items
                               .filter((_) => _.status === false)
                               .length == 0)
-                              ? <ActionDoneAll />
+                              ? <SvgIcon />
                               : false
                   }
                 </td>
@@ -153,7 +150,7 @@ class StaffOrders extends Component {
             </tbody>
           </table>
           <div className="centralize-container padding-top">
-            <CommunicationChat style={{width: 50, height: 50}}/>
+            <SvgIcon style={{width: 50, height: 50}}/>
           </div>
           <table className="order-table messages-table">
             <thead>

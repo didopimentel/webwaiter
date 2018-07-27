@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import { establishmentActions } from '../actions/establishmentActions'
 
@@ -54,7 +54,7 @@ class StaffHomePage extends Component {
                 onChange={(e) => this.staffPasswordHandler(e)}
                 value={password}
                 />
-            <RaisedButton
+            <Button
               className="button"
               label="Login"
               primary="true"

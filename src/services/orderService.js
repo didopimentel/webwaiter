@@ -4,7 +4,8 @@ import { urls } from '../helpers/urls'
 
 export const orderService = {
   orderItems,
-  getOrdersPerTable
+  getOrdersPerTable,
+  getBillPerCustomer
 }
 
 function orderItems(items, tableID) {
@@ -23,6 +24,19 @@ function orderItems(items, tableID) {
    .catch( error => {
      return Promise.reject(error)
    })
+}
+
+function getBillPerCustomer() {
+  const header = authHeader();
+  return axios({
+    method: 'GET',
+    url: urls.API + 'orders/BillPerCustomer',
+    headers: header,
+  }).then(response => {
+    return response.data
+  }).catch(error => {
+    return Promise.reject(error)
+  })
 }
 
 function getOrdersPerTable() {

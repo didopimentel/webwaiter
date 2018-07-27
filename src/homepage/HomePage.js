@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { establishmentActions } from '../actions/establishmentActions'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
-import Divider from 'material-ui/Divider'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import Divider from '@material-ui/core/Divider'
 import '../styles/main.css'
-import * as Colors from 'material-ui/styles/colors'
+import * as Colors from '@material-ui/core/colors'
 import { connect } from 'react-redux'
 
 
@@ -67,7 +67,7 @@ class HomePage extends Component {
                 onChange={(e) => this.establishmentCodeHandler(e)}
                 value={establishmentCode}
                 />
-              <RaisedButton
+              <Button
                 className="button"
                 label="Access"
                 primary="true"
@@ -93,7 +93,7 @@ class HomePage extends Component {
                 onChange={(e) => this.customerPasswordHandler(e)}
                 value={customerAccess.password}
                 />
-            <RaisedButton
+            <Button
               className="button"
               label="Login"
               primary="true"

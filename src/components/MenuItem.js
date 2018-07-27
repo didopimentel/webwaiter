@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
-import Add from 'material-ui/svg-icons/content/add'
-import Remove from 'material-ui/svg-icons/content/remove'
 import './styles/menu-item.css'
 import { connect } from 'react-redux'
 import { menuActions } from '../actions/menuActions'
-import { TableRowColumn, TableRow } from 'material-ui/Table'
-import IconButton from 'material-ui/IconButton'
-import ActionDescription from 'material-ui/svg-icons/action/description'
-import Paper from 'material-ui/Paper'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
+import Table from '@material-ui/core/Table'
+import TableRow from '@material-ui/core/TableRow'
+import TableCell from '@material-ui/core/TableCell'
+import Icon from '@material-ui/core/Icon'
+import Paper from '@material-ui/core/Paper'
+import Button from '@material-ui/core/Button'
 
 const styles = {
-  iconButton: {
+  Icon: {
     width: 15,
     height: 15,
   },
-  iconButtonRoot: {
+  IconRoot: {
     width: 30,
     height: 30,
     padding: 5
@@ -62,43 +61,43 @@ class MenuItem extends Component {
                       : 0
     return (
       <TableRow
-        onClick={() => this.test()} className="hover-effect" >
-        <TableRowColumn className="expand-column">
+        onClick={() => this.test()}>
+        <TableCell padding='none' className="col-6">
           {this.props.name}
-        </TableRowColumn>
-        <TableRowColumn>
+        </TableCell>
+        <TableCell style={{paddingRight:20, paddingLeft:20}} numeric className="col-2">
           R${this.props.price}
-        </TableRowColumn>
-        <TableRowColumn className="fixed-width">
+        </TableCell>
+        <TableCell padding='none' numeric className="col-2">
           {quantity}
-        </TableRowColumn>
-        <TableRowColumn>
-          <IconButton
-            style={styles.iconButtonRoot}
-            iconStyle={styles.iconButton}
+        </TableCell>
+        <TableCell padding='none' className="col-2">
+          <Icon
+            style={styles.IconRoot}
+            iconStyle={styles.Icon}
             onClick={() => this.addItem(quantity)}>
-            <Add/>
-          </IconButton>
-          <IconButton
-            style={styles.iconButtonRoot}
-            iconStyle={styles.iconButton}
+            <Icon/>
+          </Icon>
+          <Icon
+            style={styles.IconRoot}
+            iconStyle={styles.Icon}
             onClick={() => this.removeItem(quantity)}>
-            <Remove/>
-          </IconButton>
-        </TableRowColumn>
+            <Icon/>
+          </Icon>
+        </TableCell>
       </TableRow>
     )
   }
 }
 
-<TableRowColumn>
-  <IconButton
+<TableCell>
+  <Icon
     mini={true}
     onClick={() => this.toggleModalFromChild()}
   >
-    <ActionDescription className="muidocs-icon-action-home"/>
-  </IconButton>
-</TableRowColumn>
+    <Icon className="muidocs-icon-action-home"/>
+  </Icon>
+</TableCell>
 
 function mapStateToProps(state, ownProps) {
   const { order } = state

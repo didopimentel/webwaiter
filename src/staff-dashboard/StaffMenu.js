@@ -7,10 +7,10 @@ import { Loading } from '../components/Loading'
 import { menuActions } from '../actions/menuActions'
 import { orderActions } from '../actions/orderActions'
 import { staffActions } from '../actions/staffActions'
-import FlatButton  from 'material-ui/FlatButton'
-import { Popover } from 'material-ui/Popover'
-import { Menu, MenuItem } from 'material-ui/Menu'
-import TextField  from 'material-ui/TextField'
+import Button  from '@material-ui/core/Button'
+import Popover from '@material-ui/core/Popover'
+import { Menu, MenuItem } from '@material-ui/core/Menu'
+import TextField  from '@material-ui/core/TextField'
 
 const modalStyle = {
   content : {
@@ -181,13 +181,13 @@ class StaffMenu extends Component {
               style={{width: 150}}
               fullWidth= {false}
               hintText="Table Number" />
-            <FlatButton
+            <Button
               label="Order Now!"
               onClick={this.orderItems}
             />
           </div>
         </Popover>
-        <FlatButton
+        <Button
           label="Order"
           onClick={this.handleOrderButton}
         />
@@ -198,6 +198,7 @@ class StaffMenu extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log(state)
   const { dishes, requesting } = state.dishes
   const { order, tables, orders } = state
   return {

@@ -32,3 +32,22 @@ export function orders(state = {requestingOrders: true}, action){
       return state;
   }
 }
+
+export function billCustomer(state = {}, action) {
+  switch(action.type) {
+    case orderConstants.GET_BILL_PER_CUSTOMER_REQUEST:
+      return {
+        requesting: action.requesting
+      }
+    case orderConstants.GET_BILL_PER_CUSTOMER_SUCCESS:
+      return {
+        ...state,
+        requesting: false,
+        bill: action.ordersPerTable
+      }
+    case orderConstants.GET_BILL_PER_CUSTOMER_FAILURE:
+      return {}
+    default:
+      return state;
+  }
+}

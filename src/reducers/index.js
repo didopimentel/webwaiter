@@ -4,7 +4,7 @@ import { tableAuthentication } from './tableReducer'
 import { alert } from './alertReducer';
 import { order, dishes, categories } from './menuReducer';
 import { tables } from './staffReducer';
-import { orders } from './orderReducer'
+import { orders, billCustomer } from './orderReducer'
 import { reducer as permissions } from 'react-redux-permissions'
 
 const rootReducer = combineReducers({
@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
   order,
   orders,
   dishes,
+  billCustomer,
   categories
 });
 

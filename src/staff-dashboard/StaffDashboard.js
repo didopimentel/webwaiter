@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import './styles/staff-dashboard.css'
-import IconButton from 'material-ui/IconButton'
-import SocialPerson from 'material-ui/svg-icons/social/person'
-import ActionReceipt from 'material-ui/svg-icons/action/receipt'
-import FontIcon from 'material-ui/FontIcon'
+import Button from '@material-ui/core/Button'
+import SvgIcon from '@material-ui/core/SvgIcon'
+import Icon from '@material-ui/core/Icon'
 import { connect } from 'react-redux'
 import { staffActions } from '../actions/staffActions'
 import { Loading } from '../components/Loading'
@@ -33,13 +32,13 @@ class StaffDashboard extends Component {
           {tables && tables.map((table) => (
             <div key={table.number} className="table-icon-container">
               <div className='table-icon-inside-flex'>
-                  <FontIcon
+                  <Icon
                     onClick={() => this.deactivateCall}
                     className={"table-icon " + (table.status.callWaiter ? 'table-icon-called' : '')}/>
                 <div>{table.number}</div>
               </div>
               <div className="table-icon-inside">
-                {table.status.askForCheck && <ActionReceipt /> }
+                {table.status.askForCheck && <SvgIcon /> }
               </div>
             </div>
           ))}

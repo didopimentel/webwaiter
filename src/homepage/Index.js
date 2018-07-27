@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import './css/main.css'
 import { establishmentActions } from '../actions/establishmentActions'
@@ -8,33 +8,48 @@ import { establishmentActions } from '../actions/establishmentActions'
 class Index extends Component {
 
   state = {
-    staffId: '',
-    password: ''
+    establishmentCode : '',
+    customerAccess: {
+      customerId: '',
+      password: ''
+    }
   }
 
-  loginStaff(e) {
-    e.preventDefault()
-    const { dispatch } = this.props
-    const { staffId, password } = this.state
-    dispatch(establishmentActions.loginStaff(
-      staffId,
-      password
-    ))
-  }
-
-  staffIdHandler(e){
+  establishmentCodeHandler = (e) => {
     this.setState({
-        staffId: e.target.value
+      establishmentCode: e.target.value
     })
   }
 
-  staffPasswordHandler(e){
+  submitEstablishmentCode = (e) => {
+    e.preventDefault()
+    const { dispatch } = this.props
+    const code  = this.state.establishmentCode
+    dispatch(establishmentActions.login(code))
+
+  }
+
+  loginCustomer(){
+
+  }
+
+  customerIdHandler = (e) => {
     this.setState({
+      customerAccess: {
+        customerId: e.target.value
+      }
+    })
+  }
+
+  customerPasswordHandler = (e) => {
+    this.setState({
+      customerAccess: {
         password: e.target.value
+      }
     })
   }
   render(){
-    const { staffId, password } = this.state
+    const { customerAccess, establishmentCode } = this.state
 
     return(
       <div className="container">
@@ -42,17 +57,33 @@ class Index extends Component {
         <div className="form">
           <div className="form-title">Establishment Access</div>
           <form className="login-form">
-            <input type="text" placeholder="Code"/>
-            <button>login</button>
+            <input
+              type="text"
+              placeholder="Code"
+              onChange={(e) => this.establishmentCodeHandler(e)}/>
+            <button
+              className="btn btn-primary"
+              onClick={(e) => this.submitEstablishmentCode(e)}
+            >login</button>
             <p className="message">Not registered? <a href="#">Create an account</a></p>
           </form>
         </div>
         <div className="form">
           <div className="form-title">Customer Access</div>
           <form className="login-form">
-            <input type="text" placeholder="username"/>
-            <input type="password" placeholder="password"/>
-            <button>login</button>
+            <input
+              type="text"
+              placeholder="username"
+              onChange={(e) => this.customerIdHandler(e)}
+            />
+            <input
+              type="password"
+              placeholder="password"
+              onChange={(e) => this.customerPasswordHandler(e)}
+            />
+            <button
+              className="btn btn-primary"
+            >login</button>
             <p className="message">Not registered? <a href="#">Create an account</a></p>
           </form>
         </div>

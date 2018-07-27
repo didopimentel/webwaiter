@@ -1,19 +1,14 @@
 import React, { Component } from 'react'
-import { darkWhite } from 'material-ui/styles/colors'
-import '../styles/dashboard.css'
+import { darkWhite } from '@material-ui/core/colors'
 import { connect } from 'react-redux'
-import FontIcon from 'material-ui/FontIcon'
-import IconButton from 'material-ui/IconButton'
-import TextField from 'material-ui/TextField'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import ActionHome from 'material-ui/svg-icons/action/home'
-import ActionAssignment from 'material-ui/svg-icons/action/assignment'
-import ActionPayment from 'material-ui/svg-icons/action/payment'
-import MapsLocalDining from 'material-ui/svg-icons/maps/local-dining'
-import Avatar from 'material-ui/Avatar'
-import ActionReceipt from 'material-ui/svg-icons/action/receipt'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import SvgIcon from '@material-ui/core/SvgIcon/'
+import Avatar from '@material-ui/core/Avatar'
 import { Redirect } from 'react-router-dom'
 import { tableActions } from '../actions/tableActions'
+import img_avatar from './images/img_avatar.png'
+import Badge from '@material-ui/core/Badge'
 
 class Dashboard extends Component {
 
@@ -46,51 +41,57 @@ class Dashboard extends Component {
 
   render(){
     return(
-      <div className='container'>
-        <div className='logo-container'>
-          <Avatar
-            src="dashboard/images/img_avatar.png"
-            size={100}
-          />
-        </div>
-        <div className='navigation-bar'>
-          <IconButton>
-            <ActionHome tooltip="Home"/>
-          </IconButton>
-          <IconButton>
-            <ActionAssignment tooltip="Menu"/>
-          </IconButton>
-          <IconButton>
-            <ActionPayment tooltip="Checkout"/>
-          </IconButton>
-        </div>
-        <div className='body-container'>
-          <div className='table-id-container'>
-            <MapsLocalDining style={{marginRight: 10}}/>
-            <div className="table-id-text">
-              <TextField
-                onChange={(e) => this.handleTableID(e)}
-                hintText="Table ID"
-              />
+      <div className="container mt-3 mw-25">
+        <div className="panel panel-info">
+          <div className="panel-heading">
+            Please, insert your table number:
+          </div>
+          <div className="panel-body">
+            <div className="row text-center">
+              <div className="col-12">
+                <TextField
+                  onChange={(e) => this.handleTableID(e)}
+                  hintText="Table ID"
+                />
+                <Button
+                  mini={true}
+                  onClick={(e) => this.submitTable(e)}
+                  >
+                    OK
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
-          <div className='bill-container'>
-            <div className='bill-header'>
-              <p>Separate bill?</p>
+          <div className="panel panel-info">
+            <div className="panel-heading">
+              Separate bill?
             </div>
-            <div className='bill-body'>
-              <ActionReceipt style={{flex:1}} tooltip='Separate your bill'/>
+            <div className="panel-body">
+              <div className="row text-center">
+                <div className="col-4">
+                  <span className="glyphicon glyphicon-list display-2"></span>
+                </div>
+                <div className="col-8">
+                  <div className="row">
+                    <div className="col-3">Used:</div>
+                    <div className="col">
+                      <button className="btn btn-secondary badge" disabled>1</button>
+                      <button className="btn btn-secondary badge" disabled>2</button>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-3">New:</div>
+                    <div className="col">
+                      <button className="btn btn-success badge">3</button>
+                      <button className="btn btn-success badge">4</button>
+                      <button className="btn btn-success badge">5</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div className='home-submit'>
-          <FloatingActionButton
-            mini={true}
-            onClick={(e) => this.submitTable(e)}
-          >
-            OK
-          </FloatingActionButton>
-          </div>
-        </div>
       </div>
     )
   }

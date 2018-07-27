@@ -1,9 +1,9 @@
 import React from 'react'
 import Modal from 'react-modal'
 import propTypes from 'prop-types'
-import { List, ListItem } from 'material-ui/List'
-import Divider from 'material-ui/Divider'
-import Checkbox from 'material-ui/Checkbox'
+import { List, ListItem } from '@material-ui/core/List'
+import Divider from '@material-ui/core/Divider'
+import Checkbox from '@material-ui/core/Checkbox'
 
 const style = {
   content: {

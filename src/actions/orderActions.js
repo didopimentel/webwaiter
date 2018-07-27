@@ -4,7 +4,8 @@ import { alertActions } from './alertActions';
 
 export const orderActions = {
   orderItems,
-  getOrdersPerTable
+  getOrdersPerTable,
+  getBillPerCustomer
 }
 
 
@@ -74,6 +75,42 @@ function getOrdersPerTable() {
     function failure(error) {
       return {
         type: orderConstants.GET_ORDERS_PER_TABLE_FAILURE,
+        error
+      }
+    }
+
+}
+
+function getBillPerCustomer() {
+  return dispatch => {
+    dispatch(request())
+    orderService.getBillPerCustomer()
+      .then(
+        response => {
+          dispatch(success(response))
+        },
+        error => {
+          dispatch(failure(error))
+          dispatch(alertActions.error(error))
+        }
+      )
+  }
+
+    function request() {
+      return {
+        type: orderConstants.GET_BILL_PER_CUSTOMER_REQUEST,
+        requesting: true
+      }
+    }
+    function success(orders) {
+      return {
+        type: orderConstants.GET_BILL_PER_CUSTOMER_SUCCESS,
+        ordersPerTable: orders
+      }
+    }
+    function failure(error) {
+      return {
+        type: orderConstants.GET_BILL_PER_CUSTOMER_FAILURE,
         error
       }
     }
