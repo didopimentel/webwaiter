@@ -1,67 +1,23 @@
-.tables-container {
-  margin-top: 50px;
-  display: flex;
-  flex-flow: row wrap;
-}
-
-.table-icon-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100px;
-  width: 100%;
-  margin: 0 auto;
-  flex-basis: 25%;
-}
-
-.table-icon-inside {
-}
-
-.table-icon-inside-flex {
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-@media screen and (max-width: 700px) {
-  .table-icon-container {
-    flex-basis: 50%;
-  }
-  .header {
-    padding: 10px;
-  }
-}
-
 .table-icon {
   background-image: url("https://png.icons8.com/ios/50/000000/restaurant-table.png");
   width: 50px;
   height: 50px;
-  background-color: lightcoral;
   border-radius: 4px;
 }
 
-@keyframes callWaiter {
-  from {background-color: lightcoral;}
+@keyframes call {
+  from {background-color: white;}
   to {background-color: green;}
 }
 
-.table-icon-called {
+.service-called {
   background-color: lightcoral;
-  animation-name: callWaiter;
-  animation-duration: 0.5s;
-  /*animation-iteration-count: infinite;  */
+  animation-name: call;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
 }
 
 .table-icon:hover{
   background-color: red;
   cursor:pointer;
-}
-
-.waiter-icon {
-  background-image: url("https://png.icons8.com/ios/50/000000/restaurant-pickup.png");
-  width: 50px;
-  height: 50px;
-  border-radius: 4px;
 }

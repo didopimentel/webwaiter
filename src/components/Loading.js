@@ -7,3 +7,9 @@ export const Loading = ({ type, color }) => (
   <ReactLoading type={type} color={color} height={200} width={100}/>
   </div>
 )
+
+export const SmallLoading = ({ type, color }) => (
+  <div className="loading-container small">
+  <ReactLoading type={type} color={color} height={50} width={50}/>
+  </div>
+)

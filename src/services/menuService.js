@@ -2,7 +2,8 @@ import { authHeader } from '../helpers/authHeader';
 
 export const menuService = {
     getAllDishes,
-    getAllCategories
+    getAllCategories,
+    getSpecificItem
 };
 
 function getAllDishes() {
@@ -42,4 +43,24 @@ function getAllCategories() {
       .then(response => {
           return response;
       });
+}
+
+function getSpecificItem(itemId, status) {
+    console.log('item', itemId)
+    console.log(status)
+    const header = authHeader()
+    const requestOptions = {
+        method: 'GET',
+        headers: header
+    };
+    return fetch('http://localhost:3001/api/menu/' + itemId + '/defaultTime/' + status, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return Promise.reject(response.statusText);
+            }
+            return response.json();
+        })
+        .then(response => {
+            return response;
+});
 }

@@ -2,4 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 5%;
+}
+
+.loading-container .small {
+  padding-top: 0 !important;
 }

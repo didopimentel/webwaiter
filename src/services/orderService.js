@@ -5,7 +5,9 @@ import { urls } from '../helpers/urls'
 export const orderService = {
   orderItems,
   getOrdersPerTable,
-  getBillPerCustomer
+  getBillPerCustomer,
+  checkoutOrder,
+  changeOrderItemStatus
 }
 
 function orderItems(items, tableID) {
@@ -39,11 +41,12 @@ function getBillPerCustomer() {
   })
 }
 
-function getOrdersPerTable() {
+function getOrdersPerTable(requester) {
   const header = authHeader()
+  const endpoint = (requester === 'backofhouse') ? 'OrdersTest' : 'OrdersPerTable';
   return axios({
     method: 'GET',
-    url: urls.API + 'orders/OrdersPerTable',
+    url: urls.API + 'orders/' + endpoint,
     headers: header
   }).then(response => {
     return response.data
@@ -51,4 +54,32 @@ function getOrdersPerTable() {
     .catch( error => {
       return Promise.reject(error)
     })
+}
+
+async function checkoutOrder(amount) {
+  const header = authHeader();
+  return axios({
+    method: 'POST',
+    url: urls.API + 'checkout/',
+    headers: header,
+    data: { amount }
+  }).then(response => {
+    return response.data
+  }).catch(error => {
+    return Promise.reject(error)
+  })
+}
+
+async function changeOrderItemStatus(orderId, itemId, prevStatus, nextStatus) {
+  const header = authHeader();
+  return axios({
+    method: 'PUT',
+    url: urls.API + 'orders/' + orderId + '/item/' + itemId,
+    headers: header,
+    data: { previousStatus: prevStatus, nextStatus: nextStatus }
+  }).then(response => {
+    return response.data
+  }).catch(error => {
+    return Promise.reject(error)
+  })
 }

@@ -20,6 +20,7 @@ import StaffHomePage from '../staff-homepage/StaffHomePage'
 import StaffDashboard from '../staff-dashboard/StaffDashboard'
 import StaffOrders from '../staff-dashboard/StaffOrders'
 import StaffMenu from '../staff-dashboard/StaffMenu'
+import StaffBackOfHouseDashboard from '../staff-dashboard/StaffBackOfHouseDashboard'
 import Icon from '@material-ui/core/Icon'
 import Permissions from 'react-redux-permissions'
 import { DisabledRoute } from '../components/DisabledRoute'
@@ -27,6 +28,8 @@ import ActionReceipt from '@material-ui/core/SvgIcon/'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Card from '@material-ui/core/Card'
+import Typography from '@material-ui/core/Typography'
+import WaiterHeaderIcon from './images/waiter-header.png'
 
 const Root = () => {
   return (
@@ -34,17 +37,23 @@ const Root = () => {
       <div className="root-container">
         <Application />
         <Route exact path='/' component={Index} />
-        <Route path='/staff' render={(props) => (
+        <Route path='/staff/(dashboard|menu|orders)' render={(props) => (
           <div className="header">
-            <Icon className="table-icon header-icon" onClick={() => props.history.push('/staff/dashboard/')}/>
-            <div className="header-icon" onClick={() => props.history.push('/staff/menu')}>MENU</div>
-            <Icon className="waiter-icon header-icon" onClick={() => props.history.push('/staff/orders/')}/>
+            <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" width={50} className="header-icon" onClick={() => props.history.push('/staff/dashboard')}/>
+            <div className="header-icon" onClick={() => props.history.push('/staff/menu')}>
+              <Typography style={{fontSize:20}} >MENU</Typography>
+            </div>
+            <img src={WaiterHeaderIcon} className="header-icon" onClick={() => props.history.push('/staff/orders')}/>
           </div>
+        )}/>
+        <Route path='/staff/backofhouse' render={(props) => (
+          <div className="header"></div>
         )}/>
         <Route exact path='/staff' component={StaffHomePage} />
           <Route path='/staff/dashboard' component={StaffDashboard} />
           <Route path='/staff/menu' component={StaffMenu} />
           <Route path='/staff/orders' component={StaffOrders} />
+          <Route path='/staff/backofhouse' component={StaffBackOfHouseDashboard} />
         <Route path="/dashboard/(menu|checkout|home)" render={(props) => (
           <Card>
             <Tabs centered>

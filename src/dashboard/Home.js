@@ -58,7 +58,7 @@ class Home extends Component {
       <div className="container pt-3">
         <div className="row">
           <div className="col-12">
-            <div className="panel panel-warning">
+            <div className="panel panel-info">
               <div className="panel-heading">
                 Today:
               </div>

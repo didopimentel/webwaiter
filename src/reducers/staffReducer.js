@@ -22,7 +22,7 @@ export function orders(state = {}, action){
 
 export function tables(state = {}, action){
   switch(action.type) {
-    case staffConstants.GET_ALL_TABLES_REQUEST :
+    case (staffConstants.GET_ALL_TABLES_REQUEST ||staffConstants.UPDATE_TABLE_CALL_STATUS_REQUEST) :
       return {
         ...state,
         requesting: action.requesting
@@ -31,8 +31,13 @@ export function tables(state = {}, action){
       return {
         tables: action.tables
       }
-    case staffConstants.GET_ALL_TABLES_FAILURE :
+    case staffConstants.UPDATE_TABLE_CALL_STATUS_SUCCESS:
+      return {
+        
+      }
+    case staffConstants.GET_ALL_TABLES_FAILURE || staffConstants.UPDATE_TABLE_CALL_STATUS_FAILURE :
       return {}
+    case staffConstants.UPDATE_TABLE_CALL_STATUS_REQUEST:
     default :
       return state;
   }

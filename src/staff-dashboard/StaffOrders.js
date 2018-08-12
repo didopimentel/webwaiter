@@ -60,8 +60,8 @@ class StaffOrders extends Component {
 
   render() {
     const { viewingMessage } = this.state ? this.state : {}
-    const { requestingOrders, ordersPerTable } = this.props.orders
-    if (requestingOrders)
+    const { requesting, ordersPerTable } = this.props.orders
+    if (requesting)
       return (
         <Loading type="spin" color="lightblue"/>
       )
@@ -84,7 +84,7 @@ class StaffOrders extends Component {
                 <th key={header}>{header}</th>
               ))}
             </tr>
-            {ordersPerTable.map((table) => (
+            {ordersPerTable && ordersPerTable.map((table) => (
               <tr>
                 <td style={{backgroundColor: 'gray'}}>
                   {table.number}
@@ -179,7 +179,6 @@ class StaffOrders extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state)
   return {
     orders: state.orders
   }

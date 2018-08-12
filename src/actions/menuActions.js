@@ -9,18 +9,6 @@ export const menuActions = {
 }
 
 function requestDish(id, quantity, options) {
-/*  let currentOrders = JSON.parse(localStorage.getItem('order'))
-  if (currentOrders) {
-    if (currentOrders[id]) {
-      currentOrders[id] = quantity
-    } else {
-      currentOrders = Object.assign({}, currentOrders, {[id]: quantity})
-    }
-  }
-  else {
-    currentOrders = {[id]: quantity}
-  }
-  localStorage.setItem('order', JSON.stringify(currentOrders))*/
   let currentOrders = localStorage.getItem('order')
                         ? JSON.parse(localStorage.getItem('order'))
                         : []

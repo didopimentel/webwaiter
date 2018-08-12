@@ -5,7 +5,8 @@ import { alertActions } from './alertActions';
 export const orderActions = {
   orderItems,
   getOrdersPerTable,
-  getBillPerCustomer
+  getBillPerCustomer,
+  changeOrderItemStatus,
 }
 
 
@@ -15,7 +16,8 @@ function orderItems(order, table) {
     orderService.orderItems(order, table)
       .then(
         response => {
-          dispatch(success(response))
+          dispatch(success(response));
+          localStorage.removeItem('order');
         },
         error => {
           dispatch(failure(error))
@@ -45,10 +47,10 @@ function orderItems(order, table) {
 
 }
 
-function getOrdersPerTable() {
+function getOrdersPerTable(requester) {
   return dispatch => {
     dispatch(request())
-    orderService.getOrdersPerTable()
+    orderService.getOrdersPerTable(requester)
       .then(
         response => {
           dispatch(success(response))
@@ -111,6 +113,43 @@ function getBillPerCustomer() {
     function failure(error) {
       return {
         type: orderConstants.GET_BILL_PER_CUSTOMER_FAILURE,
+        error
+      }
+    }
+
+}
+
+function changeOrderItemStatus(orderId, itemId, table, prevStatus, nextStatus) {
+  return dispatch => {
+    dispatch(request())
+    orderService.changeOrderItemStatus(orderId, itemId, prevStatus, nextStatus)
+      .then(
+        response => {
+          dispatch(success(response, table));
+        },
+        error => {
+          dispatch(failure(error))
+          dispatch(alertActions.error(error))
+        }
+      )
+  }
+
+    function request() {
+      return {
+        type: orderConstants.CHANGE_ORDER_ITEM_STATUS_REQUEST,
+        requesting: true
+      }
+    }
+    function success(order, table) {
+      return {
+        type: orderConstants.CHANGE_ORDER_ITEM_STATUS_SUCCESS,
+        order: order,
+        table: table
+      }
+    }
+    function failure(error) {
+      return {
+        type: orderConstants.CHANGE_ORDER_ITEM_STATUS_FAILURE,
         error
       }
     }

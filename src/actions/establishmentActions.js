@@ -12,12 +12,14 @@ export const establishmentActions = {
 
 function loginStaff(username, password) {
   return dispatch => {
+    dispatch(request());
     establishmentService.loginStaff(username, password)
       .then(
         response => {
           dispatch(success(response.token, response.role));
           dispatch(add(response.role))
-          history.push('/staff/dashboard');
+          if (response.role === 'backofhouse') history.push('/staff/backofhouse');
+          else history.push('/staff/dashboard');
         },
         error => {
           let message;

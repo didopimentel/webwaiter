@@ -6,7 +6,7 @@ export function orders(state = {requestingOrders: true}, action){
   switch(action.type) {
     case orderConstants.POST_ORDER_REQUEST :
       return {
-        requesting: action.requesting
+        requesting: true
       }
     case orderConstants.POST_ORDER_SUCCESS :
       return {
@@ -16,18 +16,27 @@ export function orders(state = {requestingOrders: true}, action){
       }
     case orderConstants.POST_ORDER_FAILURE :
       return {}
-    case orderConstants.GET_ORDERS_PER_TABLE_REQUEST:
+    case orderConstants.GET_ORDERS_PER_TABLE_REQUEST || orderConstants.CHANGE_ORDER_ITEM_STATUS_REQUEST:
       return {
-        requestingOrders: action.requesting
+        requesting: action.requesting
       }
     case orderConstants.GET_ORDERS_PER_TABLE_SUCCESS:
       return {
         ...state,
-        requestingOrders: false,
+        requesting: false,
         ordersPerTable: action.ordersPerTable
       }
-    case orderConstants.GET_ORDERS_PER_TABLE_FAILURE:
-      return {}
+    case orderConstants.CHANGE_ORDER_ITEM_STATUS_SUCCESS:
+      var index = state.ordersPerTable[action.table].orders.map((o) => {return o._id}).indexOf(action.order._id);
+      var newState = state.ordersPerTable;
+      newState[action.table].orders[index] = action.order
+      return {
+        ...state,
+        requesting: false,
+        ordersPerTable: newState
+      }
+    case orderConstants.GET_ORDERS_PER_TABLE_FAILURE || orderConstants.CHANGE_ORDER_ITEM_STATUS_FAILURE:
+      return {}  
     default :
       return state;
   }

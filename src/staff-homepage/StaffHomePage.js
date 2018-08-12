@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
+import './css/main.css'
 import { establishmentActions } from '../actions/establishmentActions'
 
 class StaffHomePage extends Component {
@@ -34,37 +33,32 @@ class StaffHomePage extends Component {
   }
   render(){
     const { staffId, password } = this.state
-
     return(
-      <div className="container-fluid">
-        <div className="container-fluid text-center">
-          <h5>
-            Staff Access
-          </h5>
-          <div className="card-block">
-            <TextField
-                style={{maxWidth: '20em', minWidth: '5em', margin: 5}}
-                hintText="Staff ID"
-                onChange={(e) => this.staffIdHandler(e)}
-                value={staffId}
-                />
-            <TextField
-                style={{maxWidth: '20em', minWidth: '5em', margin: 5}}
-                hintText="Password"
-                onChange={(e) => this.staffPasswordHandler(e)}
-                value={password}
-                />
-            <Button
-              className="button"
-              label="Login"
-              primary="true"
-              onClick={(e) => this.loginStaff(e)}
-              />
-          </div>
+      <div className="container">
+        <div className="login-page">
+           <div className="form">
+                <div className="form-title">Staff Access</div>
+                <form className="login-form">
+                  <input
+                    type="text"
+                    placeholder="username"
+                    onChange={(e) => this.staffIdHandler(e)}
+                  />
+                  <input
+                    type="password"
+                    placeholder="password"
+                    onChange={(e) => this.staffPasswordHandler(e)}
+                  />
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => this.loginStaff(e)}
+                  >login</button>
+                </form>
+              </div>
         </div>
       </div>
     )
   }
-}
+  }
 
 export default connect()(StaffHomePage)

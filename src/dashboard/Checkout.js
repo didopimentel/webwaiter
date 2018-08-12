@@ -10,32 +10,63 @@ import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import { orderService } from '../services/orderService'
+import { Loading, SmallLoading } from '../components/Loading'
 
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit
   },
   buttonSmall: {
-    fontSize: 12
+    fontSize: 12,
+    height: 50
+  },
+  tableFooter: {
+    fontSize: 20,
+    margin: theme.spacing.unit,
+
   }
 })
 
 class Checkout extends Component {
+  
+  state = {
+    paying: false    
+  }
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(orderActions.getBillPerCustomer())
   }
 
+  async checkoutOnline(e) {
+    const { billCustomer } = this.props;
+    e.preventDefault();
+    var amount = billCustomer.bill ? billCustomer.bill.reduce((acc, cur) => acc + (cur.price * cur.quantity), 0)
+                              : 0
+    this.setState({
+      paying: true
+    })
+    if (amount) {
+      await orderService.checkoutOrder(amount)
+        .then(response => {
+          if (response) {
+            this.setState({
+              paying: false
+            })
+          }
+        })
+    }
+  }
+
   render () {
     const { billCustomer, classes } = this.props
+    const { paying } = this.state
+    if (billCustomer.requesting) {
+      return <div><Loading type="spin" color="lightblue" /> </div>
+    }
     return(
       <div className="container mt-3">
-        <ul className="pagination justify-content-center">
-          <li className="page-item"><a className="page-link">1</a></li>
-          <li className="page-item"><a className="page-link">2</a></li>
-          <li className="page-item"><a className="page-link">3</a></li>
-        </ul>
         <Table>
           <TableHead>
             <TableRow>
@@ -45,7 +76,7 @@ class Checkout extends Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            { billCustomer && billCustomer.map((_item) => (
+            { billCustomer.bill && billCustomer.bill.map((_item) => (
               <TableRow>
                 <TableCell style={{padding:0, margin:0}}>{_item.dish_name}</TableCell>
                 <TableCell className="text-center" style={{padding:0, margin:0}}>{_item.quantity}</TableCell>
@@ -53,23 +84,40 @@ class Checkout extends Component {
               </TableRow>
             )) }
           </TableBody>
+          <TableFooter>
+            <TableRow className="">
+              <TableCell style={{width: '100%'}}></TableCell>
+              <TableCell>
+                <h5>Total:</h5>
+              </TableCell>
+              <TableCell>
+                <h5>{billCustomer.bill && billCustomer.bill.reduce((acc, cur) => acc + (cur.price * cur.quantity), 0) }</h5>
+              </TableCell>
+            </TableRow>
+          </TableFooter>
         </Table>
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-4 pull-right">
-              Total:
-            </div>
-            <div className="col-4 pull-right">
-              {billCustomer && billCustomer.reduce((acc, cur) => acc + (cur.price * cur.quantity), 0) }
-            </div>
-          </div>
-        </div>
         <div className="row pt mt-auto m-3 p-0">
           <div className="col-6 col-md-4 offset-md-2">
-            <Button className={classes.buttonSmall} color="primary" variant="contained">Pay Online!</Button>
+            {
+              paying 
+              ? 
+              <SmallLoading type="spin" color="lightblue"/>
+              : 
+              <Button 
+                className={classes.buttonSmall} 
+                color="primary" 
+                variant="contained"
+                onClick={(e) => this.checkoutOnline(e)}>Pay Online!</Button>
+            }
           </div>
           <div className="col-6 col-md-4 offset-md-2">
-            <Button className={classes.buttonSmall} style={styles.buttonSmall} color="primary" variant="contained">Pay to Waiter</Button>
+            {
+              paying 
+              ? 
+              <SmallLoading type="spin" color="lightblue"/>
+              : 
+              <Button className={classes.buttonSmall} style={styles.buttonSmall} color="primary" variant="contained">Pay to Waiter</Button>
+            }
           </div>
         </div>
       </div>
@@ -78,8 +126,9 @@ class Checkout extends Component {
 }
 
 function mapStateToProps(state) {
+
   return {
-    billCustomer: state.billCustomer.bill
+    billCustomer: state.billCustomer
   }
 }
 

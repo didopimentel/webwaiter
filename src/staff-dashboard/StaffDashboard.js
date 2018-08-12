@@ -1,12 +1,27 @@
 import React, { Component } from 'react'
+import Person from '@material-ui/icons/Person';
+import { withStyles } from '@material-ui/core/styles'; 
+import Restaurant from '@material-ui/icons/Restaurant';
+import Description from '@material-ui/icons/Description';
 import './styles/staff-dashboard.css'
-import Button from '@material-ui/core/Button'
-import SvgIcon from '@material-ui/core/SvgIcon'
-import Icon from '@material-ui/core/Icon'
 import { connect } from 'react-redux'
 import { staffActions } from '../actions/staffActions'
+import blue from '@material-ui/core/colors/blue';
 import { Loading } from '../components/Loading'
-import { deactivateCall } from '../services/staffService'
+import Typography from '@material-ui/core/Typography'
+import RestaurantTable from './images/RestaurantTable.svg'
+
+const styles = theme => ({
+  icon: {
+    margin: theme.spacing.unit * 2,
+  },
+  iconHover: {
+    margin: theme.spacing.unit * 2,
+    '&:hover': {
+      color: blue[800],
+    },
+  }
+})
 
 class StaffDashboard extends Component {
 
@@ -28,17 +43,24 @@ class StaffDashboard extends Component {
       )
     return (
       <div className="container">
-        <div className="tables-container">
+        <div className="row">
           {tables && tables.map((table) => (
-            <div key={table.number} className="table-icon-container">
-              <div className='table-icon-inside-flex'>
-                  <Icon
-                    onClick={() => this.deactivateCall}
-                    className={"table-icon " + (table.status.callWaiter ? 'table-icon-called' : '')}/>
-                <div>{table.number}</div>
+            <div key={table.number} className="col">
+              <div className="row mr-0" style={{width: '140px'}}>
+                <div className="col pr-2" style={{padding: 0, margin: 0, textAlign:'right'}}>
+                  <Person className={table.status.call_waiter ? "service-called" : ""} style={{fontSize:'25px'}} style={{border:'2px solid'+blue[300]}} />
+                </div>
+                <div className="col p-1" style={{padding: 0, margin: 0, backgroundColor: blue[300], borderRadius: '2px'}}>
+                  <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" width={70}/>
+                </div>
+                <div className="col pl-2" style={{padding: 0, margin: 0}}>
+                  <Description className={table.status.ask_for_check ? "service-called" : ""} style={{fontSize:'25px'}} style={{border:'2px solid'+blue[300]}} />
+                </div>
               </div>
-              <div className="table-icon-inside">
-                {table.status.askForCheck && <SvgIcon /> }
+              <div className="row text-center" style={{width:'140px'}} >
+                <div className="col text-center">
+                  <Typography variant="title" color="secondary">{table.number}</Typography>
+                </div>
               </div>
             </div>
           ))}
@@ -56,4 +78,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(StaffDashboard)
+export default connect(mapStateToProps)(withStyles(styles)(StaffDashboard))

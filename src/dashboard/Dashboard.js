@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { darkWhite } from '@material-ui/core/colors'
 import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'

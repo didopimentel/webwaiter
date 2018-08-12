@@ -68,22 +68,18 @@ class MenuItem extends Component {
         <TableCell style={{paddingRight:20, paddingLeft:20}} numeric className="col-2">
           R${this.props.price}
         </TableCell>
-        <TableCell padding='none' numeric className="col-2">
+        <TableCell>
           {quantity}
         </TableCell>
-        <TableCell padding='none' className="col-2">
-          <Icon
-            style={styles.IconRoot}
-            iconStyle={styles.Icon}
-            onClick={() => this.addItem(quantity)}>
-            <Icon/>
-          </Icon>
-          <Icon
-            style={styles.IconRoot}
-            iconStyle={styles.Icon}
-            onClick={() => this.removeItem(quantity)}>
-            <Icon/>
-          </Icon>
+        <TableCell>
+        <div className="row">
+            <button onClick={() => this.addItem(quantity)} className="btn btn-info btn-sm col-md-12 hover-effect">
+              +
+            </button>
+            <button onClick={() => this.removeItem(quantity)} className="btn btn-danger btn-sm col-md-12 hover-effect">
+              -
+            </button>
+        </div>
         </TableCell>
       </TableRow>
     )

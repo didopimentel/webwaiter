@@ -5,8 +5,6 @@ import registerServiceWorker from './registerServiceWorker';
 import * as Colors from '@material-ui/core/colors'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import $ from 'jquery';
-import Popper from 'popper.js';
 import blue from '@material-ui/core/colors/blue';
 import green from '@material-ui/core/colors/green';
 import { Provider } from 'react-redux'

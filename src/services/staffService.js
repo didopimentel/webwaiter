@@ -1,5 +1,6 @@
 import { authHeader } from '../helpers/authHeader'
 import axios from 'axios'
+import { urls } from '../helpers/urls'
 
 export const staffService = {
   getAllOrders,
@@ -40,6 +41,19 @@ function getAllTables() {
     .catch(error => {
       return Promise.reject(error)
     })
+}
+
+function updateTableCallStatus(tableId, status) {
+  const header = authHeader();
+  return axios.patch(
+    urls.API + 'tables/' +  tableId + 'updateCallStatus',
+    { headers: header },
+    { data: status }
+  ).then(response => {
+    return response.data
+  }).catch(error => {
+    return Promise.reject(error)
+  })
 }
 
 

@@ -23,6 +23,9 @@ class Application extends Component {
     history.push('/staff');
   }
 
+  logout = () => {
+  }
+
   render(){
     return(
       <AppBar position="static">
@@ -32,7 +35,7 @@ class Application extends Component {
           </Typography>
           <Button color="inherit" onClick={this.goToStaffLogin}>Staff</Button>
           <Button color="inherit">Login</Button>
-          <Button color="inherit">Logout</Button>
+          <Button color="inherit" onClick={this.logout}>Logout</Button>
         </Toolbar>
       </AppBar>
     )
@@ -40,9 +43,11 @@ class Application extends Component {
 
 }
 function mapStateToProps(state) {
-  const { alert } = state;
+  const { alert, authentication, tableAuthentication } = state;
   return {
-    alert
+    alert,
+    authentication,
+    tableAuthentication
   }
 }
 

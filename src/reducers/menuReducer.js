@@ -25,15 +25,6 @@ export function order(state = initialState, action) {
           quantity: action.quantity
         }
       ]
-      /*{
-        ...state,
-
-        [action.id]: {
-          ...state[action.id],
-          quantity: action.quantity,
-          options: action.options
-        }
-      }*/
     default :
       return state;
   }
