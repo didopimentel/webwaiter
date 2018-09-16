@@ -2,12 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import SvgIcon from '@material-ui/core/SvgIcon/'
-import Avatar from '@material-ui/core/Avatar'
-import { Redirect } from 'react-router-dom'
 import { tableActions } from '../actions/tableActions'
-import img_avatar from './images/img_avatar.png'
-import Badge from '@material-ui/core/Badge'
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TableAndChair from './images/tableandchairs.svg'
 
 class Dashboard extends Component {
 
@@ -40,24 +37,35 @@ class Dashboard extends Component {
 
   render(){
     return(
-      <div className="container mt-3 mw-25">
+      <div className="container mw-25" style={{marginTop:100}} >
         <div className="panel panel-info">
           <div className="panel-heading">
             Please, insert your table number:
           </div>
           <div className="panel-body">
             <div className="row text-center">
-              <div className="col-12">
+              <div className="col-12 col-sm-6">
                 <TextField
                   onChange={(e) => this.handleTableID(e)}
-                  hintText="Table ID"
+                  style={{width: '20%'}}
+                  margin='dense'
+                  /*InputProps={{
+                    startAdornment: (
+                      <InputAdornment style={{padding:10}} >
+                        <img src={TableAndChair}/>
+                      </InputAdornment>
+                    )
+                  }}*/
                 />
-                <Button
-                  mini={true}
-                  onClick={(e) => this.submitTable(e)}
-                  >
-                    OK
-                  </Button>
+                </div>
+                <div className="col-12 col-sm-6 pt-3">
+                  <Button
+                    mini={true}
+                    className="btn btn-info"
+                    onClick={(e) => this.submitTable(e)}
+                    >
+                      OK
+                    </Button>
                 </div>
               </div>
             </div>

@@ -32,7 +32,6 @@ class StaffHomePage extends Component {
     })
   }
   render(){
-    const { staffId, password } = this.state
     return(
       <div className="container">
         <div className="login-page">

@@ -1,15 +1,13 @@
 import React, { Component } from 'react'
-import { MenuOfItems } from '../components/MenuOfItems'
+import MenuOfItems from '../components/MenuOfItems'
 import { connect } from 'react-redux'
-import Modal from 'react-modal'
-import { ItemModal } from '../components/ItemModal'
+import ItemModal from '../components/ItemModal'
 import { Loading } from '../components/Loading'
 import { menuActions } from '../actions/menuActions'
 import { orderActions } from '../actions/orderActions'
 import { staffActions } from '../actions/staffActions'
 import Button  from '@material-ui/core/Button'
 import Popover from '@material-ui/core/Popover'
-import { Menu, MenuItem } from '@material-ui/core/Menu'
 import TextField  from '@material-ui/core/TextField'
 
 const modalStyle = {
@@ -23,52 +21,12 @@ const modalStyle = {
   }
 }
 
-
-const categories = [
-  {
-    name: "Main Food"
-  },
-  {
-    name: "Breakfast"
-  }
-]
-const dishes = [
-  {
-    id: 0,
-    dishName: "Bread",
-    price: 50,
-    category: "Main Food",
-    description: "This is a bread",
-    imageUrl: "https://tabledb.s3.amazonaws.com/hgwlandingpage/promotion/57eb38c3e4b04d135dfee153/morganfield_20170601_3840.jpg",
-    ingredients: [
-      "Bread",
-      "Butter",
-      "Plate"
-    ]
-  },
-  {
-    id: 1,
-    dishName: "Pasta",
-    price: 25,
-    category: "Main Food",
-    description: "This is pasta",
-    imageUrl: "https://tabledb.s3.amazonaws.com/hgwlandingpage/promotion/57eb38c3e4b04d135dfee153/morganfield_20170601_3840.jpg",
-    ingredients: [
-      "Pasta",
-      "Butter",
-      "Olive Oil",
-      "Red Sauce"
-    ]
-  }
-]
-
-
 class StaffMenu extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      category: 'Main Food',
+      category: '',
       modalOpen: false,
       currentDishId: '',
       popoverOpen: false,
@@ -82,6 +40,7 @@ class StaffMenu extends Component {
     const { dispatch } = this.props
     dispatch(menuActions.getAllDishes())
     dispatch(staffActions.getAllTables())
+    dispatch(menuActions.getAllCategories())
   }
 
 
@@ -128,7 +87,7 @@ class StaffMenu extends Component {
   orderItems = (event) => {
     event.preventDefault()
     const { dispatch, order, tables } = this.props
-    const tableID = tables.filter((table) => table.number == this.state.tableNumber)[0]._id
+    const tableID = tables.filter((table) => table.number === this.state.tableNumber)[0]._id
     if (order) {
       dispatch(orderActions.orderItems(order, tableID))
     }
@@ -139,15 +98,23 @@ class StaffMenu extends Component {
 
   render() {
     const { currentDishId, modalOpen, category } = this.state
-    const { isRequesting, orders } = this.props
+    const { requesting } = this.props;
+    const { categories } = this.props.categories;
+    const { dishes } = this.props.dishes;
     const currentDish = modalOpen ?
-                          dishes.filter((_) => _.id == currentDishId)
+                          dishes.filter((_) => _.id === currentDishId)
                                 .reduce((obj, item) => {
                                   return item
                                 }, {})
                           : {}
+                              
+    if (category == '' && categories) {
+      this.setState({
+        category: categories[0].name
+      })
+    }
 
-    if (isRequesting)
+    if (requesting)
       return (
         <Loading type="spin" color="lightblue"/>
       )
@@ -198,15 +165,15 @@ class StaffMenu extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state)
-  const { dishes, requesting } = state.dishes
-  const { order, tables, orders } = state
+  const { order, tables, orders, categories, dishes } = state
+  const requesting = (tables.requesting || dishes.requesting || categories.requesting) ? true : false
   return {
     orders: orders,
     tables: tables.tables,
     order: order,
-    menu: dishes,
-    isRequesting: requesting
+    dishes: dishes,
+    requesting: requesting,
+    categories: categories
   }
 }
 

@@ -5,6 +5,7 @@ import { alert } from './alertReducer';
 import { order, dishes, categories } from './menuReducer';
 import { tables } from './staffReducer';
 import { orders, billCustomer } from './orderReducer'
+import { stations } from './adminReducer'
 import { reducer as permissions } from 'react-redux-permissions'
 
 const rootReducer = combineReducers({
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   orders,
   dishes,
   billCustomer,
-  categories
+  categories,
+  stations
 });
 
 export default rootReducer;

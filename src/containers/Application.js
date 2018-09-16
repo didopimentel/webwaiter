@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import AppBar from '@material-ui/core/AppBar'
-import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import Divider from '@material-ui/core/Divider'
-import * as Colors from '@material-ui/core/colors'
-import { Route, Router, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { history } from '../helpers/history'
-import { PrivateRoute } from '../components/PrivateRoute'
 import Typography from '@material-ui/core/Typography'
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
+import { withStyles } from '@material-ui/core/styles'; 
+
+const styles = theme => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  }
+});
 
 class Application extends Component {
 
@@ -27,8 +27,9 @@ class Application extends Component {
   }
 
   render(){
+    const { classes } = this.props
     return(
-      <AppBar position="static">
+      <AppBar position="absolute" className={classes.appBar}>
         <Toolbar variant="dense">
           <Typography variant="title" color="inherit">
             WebWaiter
@@ -51,4 +52,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(Application)
+export default connect(mapStateToProps)(withStyles(styles)(Application))

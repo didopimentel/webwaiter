@@ -1,6 +1,6 @@
 import { tableConstants } from '../constants/tableConstants';
 
-let token = JSON.parse(localStorage.getItem('token'));
+let token = localStorage.getItem('token');
 const initialState = token
                      ? { loggedInTable: true, token: token }
                      : {};

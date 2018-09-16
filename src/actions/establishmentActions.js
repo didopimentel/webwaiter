@@ -18,19 +18,22 @@ function loginStaff(username, password) {
         response => {
           dispatch(success(response.token, response.role));
           dispatch(add(response.role))
+          localStorage.setItem('token', response.token);
+          localStorage.setItem('role', response.role);
           if (response.role === 'backofhouse') history.push('/staff/backofhouse');
+          if (response.role === 'admin') history.push('/admin/');
           else history.push('/staff/dashboard');
         },
         error => {
           let message;
-          if(error == 500) {
+          if(error === 500) {
             message = 'Could not reach the server'
           }
           else {
             message = error
           }
-          dispatch(failure(error))
-          dispatch(alertActions.error(error));
+          dispatch(failure(message))
+          dispatch(alertActions.error(message));
         }
       )
   }

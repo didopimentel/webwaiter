@@ -78,7 +78,7 @@ class ItemWorkflowCard extends Component {
                     }
                 })
                 .catch((error) => {
-                    this.props.dispatch(alertActions(error.message))
+                    if (error) this.props.dispatch(alertActions(error.message))
                 })
         }
     }
@@ -95,7 +95,7 @@ class ItemWorkflowCard extends Component {
         var delayStyle = styles.itemOk;
         if (this.state.delay == 'Delayed') delayStyle = styles.itemDelayed;
         if (this.state.delay == 'VeryDelayed') delayStyle = styles.itemVeryDelayed; 
-        const { tableIndex, orderId, itemId, status, nextStatus, startTime, endTime, height } = this.props
+        const { status, height } = this.props
         const timeToShow = (status != 'Item Ready') ? elapsedTime+' Minutes' : ''
 
         return status ? (
@@ -119,7 +119,6 @@ ItemWorkflowCard.propTypes = {
 }
 
 function mapStateToProps(state) {
-    const { orders } = state
 }
 
 export default connect(mapStateToProps)(ItemWorkflowCard)

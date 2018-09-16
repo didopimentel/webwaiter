@@ -1,7 +1,8 @@
 import React from 'react'
 import Modal from 'react-modal'
 import propTypes from 'prop-types'
-import { List, ListItem } from '@material-ui/core/List'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/List'
 import Divider from '@material-ui/core/Divider'
 import Checkbox from '@material-ui/core/Checkbox'
 
@@ -44,7 +45,7 @@ const modalData = {
 
 }
 
-export const ItemModal = (props) => {
+const ItemModal = (props) => {
   const { currentDish, modalOpen, toggleModalClose } = props
   return(
   <Modal
@@ -78,3 +79,5 @@ export const ItemModal = (props) => {
 ItemModal.propTypes = {
   currentDish: propTypes.object.isRequired
 }
+
+export default ItemModal

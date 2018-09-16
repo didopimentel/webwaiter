@@ -1,12 +1,29 @@
 import { authHeader } from '../helpers/authHeader';
 import axios from 'axios'
+import { urls } from '../helpers/urls'
 
 export const establishmentService = {
+    createEstablishment,
     loginStaff,
     login,
     loginTable,
     logout
 };
+
+function createEstablishment (establishment) {
+    const header = authHeader();
+    return axios({
+        method: 'POST',
+        url: urls.API + 'establishments/',
+        headers: header,
+        data: establishment
+    }).then( response => {
+        return response.data
+    })
+       .catch( error => {
+         return Promise.reject(error)
+    })
+}
 
 function loginStaff(username, password) {
   return axios.post('http://localhost:3001/api/establishments/authenticate-staff', {
@@ -14,8 +31,8 @@ function loginStaff(username, password) {
     password
   })
     .then((response) => {
-      localStorage.setItem('token', JSON.stringify(response.data.token))
-      localStorage.setItem('role', JSON.stringify(response.data.role))
+      localStorage.setItem('token', JSON.stringify(response.token))
+      localStorage.setItem('role', JSON.stringify(response.role))
       return response.data
     })
     .catch((error) => {
@@ -77,21 +94,4 @@ function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('establishment');
     localStorage.removeItem('token');
-}
-
-function getAll() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
-
-  //  return fetch('/users', requestOptions).then(handleResponse);
-}
-
-function handleResponse(response) {
-    if (!response.ok) {
-        return Promise.reject(response.statusText);
-    }
-
-    return response.json();
 }

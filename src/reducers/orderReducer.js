@@ -1,5 +1,4 @@
 import { orderConstants } from '../constants/orderConstants'
-import { orderActions } from '../actions/orderActions'
 
 
 export function orders(state = {requestingOrders: true}, action){

@@ -30,7 +30,7 @@ class Home extends Component {
 
 
   nextMedia = () => {
-    const index = (this.state.index == (dayMedia.length-1)) ? 0 : this.state.index + 1
+    const index = (this.state.index === (dayMedia.length-1)) ? 0 : this.state.index + 1
     const media = {
       src: dayMedia[index].src,
       content: dayMedia[index].content
@@ -42,7 +42,7 @@ class Home extends Component {
   }
 
   prevMedia = () => {
-    const index = (this.state.index == 0) ? dayMedia.length-1 : this.state.index - 1
+    const index = (this.state.index === 0) ? dayMedia.length-1 : this.state.index - 1
     const media = {
       src: dayMedia[index].src,
       content: dayMedia[index].content

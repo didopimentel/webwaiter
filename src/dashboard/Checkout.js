@@ -8,7 +8,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
-import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import { orderService } from '../services/orderService'
 import { Loading, SmallLoading } from '../components/Loading'

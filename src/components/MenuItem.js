@@ -50,28 +50,23 @@ class MenuItem extends Component {
     dispatch(menuActions.requestDish(id, newQuantity))
   }
 
-  test() {
-    console.log('teste')
-  }
-
   render(){
     const { order } = this.props
     const quantity =  order ?
                       order.quantity
                       : 0
     return (
-      <TableRow
-        onClick={() => this.test()}>
-        <TableCell padding='none' className="col-6">
+      <TableRow>
+        <TableCell padding='none' className="col-8">
           {this.props.name}
         </TableCell>
-        <TableCell style={{paddingRight:20, paddingLeft:20}} numeric className="col-2">
+        <TableCell style={{paddingRight:10, paddingLeft:20}} className="col-2" >
           R${this.props.price}
         </TableCell>
-        <TableCell>
+        <TableCell className="col-1">
           {quantity}
         </TableCell>
-        <TableCell>
+        <TableCell className="col-1">
         <div className="row">
             <button onClick={() => this.addItem(quantity)} className="btn btn-info btn-sm col-md-12 hover-effect">
               +

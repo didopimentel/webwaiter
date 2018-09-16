@@ -1,17 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import AppBar from '@material-ui/core/AppBar'
-import TextField from '@material-ui/core/TextField'
 import { history } from '../helpers/history'
 import '../styles/main.css'
 import '../icons/dripicons-master/webfont/webfont.css'
 import '../styles/material-dashboard-html-v2.1.0/assets/css/material-dashboard.css'
-import * as Colors from '@material-ui/core/colors'
 import { Router, Route, Link } from 'react-router-dom'
 import Dashboard from '../dashboard/Dashboard'
 import Application from '../containers/Application'
 import { PrivateRoute } from '../components/PrivateRoute'
-import HomePage from '../homepage/HomePage'
 import Index from '../homepage/Index'
 import Menu from '../dashboard/Menu'
 import Home from '../dashboard/Home'
@@ -21,29 +17,46 @@ import StaffDashboard from '../staff-dashboard/StaffDashboard'
 import StaffOrders from '../staff-dashboard/StaffOrders'
 import StaffMenu from '../staff-dashboard/StaffMenu'
 import StaffBackOfHouseDashboard from '../staff-dashboard/StaffBackOfHouseDashboard'
-import Icon from '@material-ui/core/Icon'
-import Permissions from 'react-redux-permissions'
-import { DisabledRoute } from '../components/DisabledRoute'
-import ActionReceipt from '@material-ui/core/SvgIcon/'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Card from '@material-ui/core/Card'
 import Typography from '@material-ui/core/Typography'
 import WaiterHeaderIcon from './images/waiter-header.png'
+import AdminIndex from '../admin-dashboard/AdminIndex'
+import EstablishmentRegister from '../register/EstablishmentRegister'
+import { Helmet } from 'react-helmet'
 
-const Root = () => {
+const User = PrivateRoute(['user'], ['anonymous'])
+const Employee = PrivateRoute(['employee', 'admin'])
+const Backofhouse = PrivateRoute(['backofhouse', 'admin'])
+const Admin = PrivateRoute(['admin']) 
+
+const Root = (props) => {
+  const { loggedInTable, loggedInDashboard } = props
   return (
     <Router history={history}>
       <div className="root-container">
+
+        <Helmet>
+          <style>{'body { background: -moz-linear-gradient(left, rgba(97,123,153,0) 0%, rgba(97,123,153,0.8) 8%, rgba(97,123,153,0.9) 10%, rgba(97,125,156,1) 12%, rgba(102,164,214,1) 50%, rgba(88,119,156,1) 88%, rgba(87,117,153,0.9) 90%, rgba(87,117,153,0.8) 92%, rgba(87,117,153,0) 100%); font-family: Roboto, sans-serif}'}</style>
+
+}
+        </Helmet>
+
         <Application />
+
+        { loggedInDashboard && loggedInTable && history.push('/dashboard/menu')}
+
         <Route exact path='/' component={Index} />
+        <Route path='/establishmentRegister' component={EstablishmentRegister} />
+        <Route path='/admin/' component={AdminIndex} />
         <Route path='/staff/(dashboard|menu|orders)' render={(props) => (
           <div className="header">
-            <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" width={50} className="header-icon" onClick={() => props.history.push('/staff/dashboard')}/>
+            <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" alt="Dashboard" width={50} className="header-icon" onClick={() => props.history.push('/staff/dashboard')}/>
             <div className="header-icon" onClick={() => props.history.push('/staff/menu')}>
               <Typography style={{fontSize:20}} >MENU</Typography>
             </div>
-            <img src={WaiterHeaderIcon} className="header-icon" onClick={() => props.history.push('/staff/orders')}/>
+            <img src={WaiterHeaderIcon} alt="Orders" className="header-icon" onClick={() => props.history.push('/staff/orders')}/>
           </div>
         )}/>
         <Route path='/staff/backofhouse' render={(props) => (
@@ -56,7 +69,7 @@ const Root = () => {
           <Route path='/staff/backofhouse' component={StaffBackOfHouseDashboard} />
         <Route path="/dashboard/(menu|checkout|home)" render={(props) => (
           <Card>
-            <Tabs centered>
+            <Tabs style={{paddingTop:50}} centered>
               <Tab label="Home" component={Link} to="/dashboard/home" />
               <Tab label="Menu" component={Link} to="/dashboard/menu" />
               <Tab label="Checkout" component={Link} to="/dashboard/checkout" />
@@ -72,4 +85,15 @@ const Root = () => {
   )
 }
 
-export default connect()(Root)
+function mapStateToProps(state) {
+  const { tableAuthentication, authentication } = state;
+  const { loggedInTable } = tableAuthentication;
+  const { loggedInDashboard } = authentication;
+
+  return {
+    loggedInTable,
+    loggedInDashboard
+  }
+}
+
+export default connect(mapStateToProps)(Root)

@@ -30,9 +30,9 @@ const OrderWorkflowCard = ({ height, order }) => {
     }
 
 
-    const itemsNotReady = order.item_list.filter(_item => _item.status != 'Item Ready');
+    const itemsNotReady = order.item_list.filter(_item => _item.status !== 'Item Ready');
 
-    return (itemsNotReady.length == 0) ?
+    return (itemsNotReady.length === 0) ?
     (
         <div style={this.styles.itemsOk}>
             <span style={this.styles.textSpan}>Ready!</span>

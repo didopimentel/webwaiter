@@ -1,8 +1,6 @@
 import { establishmentConstants } from '../constants/establishmentConstants';
-import { establishmentService } from '../services/establishmentService'
 
-let establishmentCode = JSON.parse(localStorage.getItem('establishmentCode'));
-let role = JSON.parse(localStorage.getItem('role'))
+let establishmentCode = localStorage.getItem('establishmentCode');
 let initialState = {}
 if (establishmentCode) {
   initialState = {

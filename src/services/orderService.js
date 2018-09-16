@@ -43,7 +43,7 @@ function getBillPerCustomer() {
 
 function getOrdersPerTable(requester) {
   const header = authHeader()
-  const endpoint = (requester === 'backofhouse') ? 'OrdersTest' : 'OrdersPerTable';
+  const endpoint = (requester === 'backofhouse') ? 'OrdersPerTableBackOfHouse' : 'OrdersPerTable'
   return axios({
     method: 'GET',
     url: urls.API + 'orders/' + endpoint,

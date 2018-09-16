@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import Person from '@material-ui/icons/Person';
 import { withStyles } from '@material-ui/core/styles'; 
-import Restaurant from '@material-ui/icons/Restaurant';
 import Description from '@material-ui/icons/Description';
 import './styles/staff-dashboard.css'
 import { connect } from 'react-redux'
@@ -9,7 +8,6 @@ import { staffActions } from '../actions/staffActions'
 import blue from '@material-ui/core/colors/blue';
 import { Loading } from '../components/Loading'
 import Typography from '@material-ui/core/Typography'
-import RestaurantTable from './images/RestaurantTable.svg'
 
 const styles = theme => ({
   icon: {
@@ -35,7 +33,7 @@ class StaffDashboard extends Component {
   }
 
   render() {
-    const { history, isRequesting } = this.props
+    const { isRequesting } = this.props
     const { tables } = this.props.tables
     if (isRequesting)
       return (
@@ -64,7 +62,6 @@ class StaffDashboard extends Component {
               </div>
             </div>
           ))}
-
         </div>
       </div>
     )

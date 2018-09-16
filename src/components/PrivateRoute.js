@@ -1,10 +1,17 @@
 import React from 'react'
-import { Route, Redirect } from 'react-router-dom'
 
-export const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route { ...rest } render={(props) => (
-    localStorage.getItem('loggedInDashboard')
-    ? <Component  { ...props } />
-    : <Redirect to={{pathname: '/', state: { from: props.location }}} />
-  )} />
-)
+export const PrivateRoute = (allowedRoles) => (WrappedComponent) => {
+    class WithAuthorization extends React.Component {
+        render () {
+            const role = localStorage.getItem('role');
+            if (allowedRoles.includes(role)) 
+                return <WrappedComponent {...this.props} />
+            else {
+                return <div>Not allowed!</div>
+            }
+        }
+
+    }
+    return WithAuthorization
+}
+    export default PrivateRoute

@@ -1,5 +1,4 @@
 import { menuConstants } from '../constants/menuConstants'
-import { menuActions } from '../actions/menuActions'
 
 let order = JSON.parse(localStorage.getItem('order'));
 const initialState = order ? order : []
@@ -41,7 +40,7 @@ export function dishes(state = initialStateMenu, action){
       }
     case menuConstants.GET_ALL_DISHES_SUCCESS :
       return {
-        requesting: action.requesting,
+        requesting: false,
         dishes: action.dishes
       }
     case menuConstants.GET_ALL_DISHES_FAILURE :
@@ -59,12 +58,12 @@ export function categories(state = initialStateCategories, action){
     case menuConstants.GET_ALL_CATEGORIES_REQUEST :
       return {
         ...state,
-        requesting: action.requesting
+        requesting: true
       }
     case menuConstants.GET_ALL_CATEGORIES_SUCCESS :
       return {
         ...state,
-        requesting: action.requesting,
+        requesting: false,
         categories: action.categories
       }
     case menuConstants.GET_ALL_CATEGORIES_FAILURE :

@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import './styles/staff-orders.css'
-import SvgIcon from '@material-ui/core/SvgIcon'
-import * as data from './test-data'
-import Modal from 'react-modal'
 import { orderActions } from '../actions/orderActions'
 import { Loading } from '../components/Loading'
+import Typography from '@material-ui/core/Typography';
+import ItemWorkflowCard from './components/ItemWorkflowCard';
+import OrderWorkflowCard from './components/OrderWorkflowCard';
 
 const modalStyle = {
   content : {
@@ -59,7 +59,6 @@ class StaffOrders extends Component {
   }
 
   render() {
-    const { viewingMessage } = this.state ? this.state : {}
     const { requesting, ordersPerTable } = this.props.orders
     if (requesting)
       return (
@@ -68,110 +67,120 @@ class StaffOrders extends Component {
     return (
       <div>
         <div className="outer-container">
-        <Modal
-          isOpen={this.state.modalOpen}
-          onRequestClose={() => this.toggleModalClose()}
-          style={modalStyle}
-        > {viewingMessage.station + " sent: "}{viewingMessage.content}
-        </Modal>
-          <div className="centralize-container">
-            <SvgIcon style={{width: 50, height: 50}}/>
-          </div>
-          <table className="order-table">
-            <tbody>
-            <tr>
-              {titles.map((header) => (
-                <th key={header}>{header}</th>
-              ))}
-            </tr>
-            {ordersPerTable && ordersPerTable.map((table) => (
-              <tr>
-                <td style={{backgroundColor: 'gray'}}>
-                  {table.number}
-                </td>
-                <td>
-                  <table className="child-table">
-                    <tbody>
-                    {table.items.map((item) => (
-                      <tr>
-                      </tr>
-                    ))}
-                    </tbody>
-                  </table>
-                </td>
-                <td>
-                  <table className="order-table child-table">
-                    <tbody>
-                    {table.items.map((item) => (
-                      <tr className="inside-data">
-                        <td>
-                          <div>
-                          {item.name}
+          <div className="panel panel-warning">
+            <div className="panel-heading">
+              <div className="row">
+                {titles.map(title => (
+                  <div className="col text-center">
+                    <Typography>{title}</Typography>
+                  </div>    
+                ))}
+              </div>
+            </div>
+            <div className="panel-body text-center align-text-middle">
+                {ordersPerTable && ordersPerTable.map((_tableOrders, tableIndex) => (    
+                    <div className="row" style={{marginBottom: 15}}>
+                    <div className="col"style={{verticalAlign:'baselign'}}>
+                        <div className="panel panel-default" style={{height:'100%'}}>
+                            <div style={{verticalAlign:'middle', position:'relative', top:'45%'}}>
+                                Table {_tableOrders.number}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col">
+                        {_tableOrders.orders.map(orders => (
+                            <div className="row"  style={{marginBottom: 10, marginTop: 5, marginRight:'1px', backgroundColor: 'rgba(210,212,216,0.3)', borderRadius:'3px'}}>
+                                <div className="col-12">
+                                {orders.item_list.map((items) => (
+                                      <div className="row" style={{marginBottom: 5}}>
+                                          <div className="col-12">
+                                              
+                                              <ItemWorkflowCard />
+                                                  
+                                          </div>
+                                      </div>
+                                  ))}
+                                    
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="col">
+                      {_tableOrders.orders.map((_orders) => (
+                          <div className="row"  style={{marginBottom: 10, marginTop:5}}>
+                              <div className="col-12">
+                              {_orders.item_list.map(_order => (
+                                  <div className="row"  style={{marginBottom: 5}}>
+                                      <div className="col-12" style={{height:30}}>
+                                          <span style={{verticalAlign:'middle'}}>
+                                              {_order.dish_name}
+                                          </span>
+                                      </div>  
+                                  </div>
+                              ))}
+                              </div>
                           </div>
-                        </td>
-                      </tr>
-                    ))}
-                    </tbody>
-                  </table>
-                </td>
-                <td>
-                  <table className="order-table child-table">
-                    <tbody>
-                    {table.items.map((item) => (
-                      <tr>
-                        <td>
-                          <div className={((item.status !== 'Queue') ? 'ready-item' : 'notready-item')}>
-                          &nbsp;
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                    </tbody>
-                  </table>
-                </td>
-                <td>
-                  {(table.items
-                              .filter((_) => _.status === false)
-                              .length == 0)
-                              ? <SvgIcon />
-                              : false
-                  }
-                </td>
-                <td>
-                  {(table.items
-                              .filter((_) => _.status === false)
-                              .length == 0)
-                              ? <SvgIcon />
-                              : false
-                  }
-                </td>
-              </tr>
-            ))}
-            </tbody>
-          </table>
-          <div className="centralize-container padding-top">
-            <SvgIcon style={{width: 50, height: 50}}/>
+                      ))}
+                  </div>
+                  <div className="col">
+                      {_tableOrders.orders.map((orders) => (
+                              <div className="row" style={{marginBottom: 10, marginTop:5}}>
+                                  <div className="col-12">
+                                      {orders.item_list.map((items) => (
+                                          <div className="row" style={{marginBottom: 5}}>
+                                              <div className="col-12  ">
+                                              {items.status == 'Item Ready' ? 
+                                              <ItemWorkflowCard tableIndex={tableIndex} orderId={orders._id} itemId={items.item_id} status={items.status} nextStatus='Item Ready' startTime={items.start_time} endTime={items.end_time} /> 
+                                              : <ItemWorkflowCard/> }
+                                              </div>
+                                          </div>
+                                      ))}
+                                  </div>
+                              </div>
+                          ))}
+                  </div>
+                  <div className="col" style={{backgroundColor:'#e6e6ff', borderRadius:5}}>
+                      {_tableOrders.orders.map((orders) => (
+                              <div className="row" style={{marginBottom: 15, marginTop:5}}>
+                                  <div className="col-12">
+                                      <OrderWorkflowCard height={(35)*orders.item_list.length - 5} order={orders}/>
+                                  </div>
+                              </div>
+                          ))}
+                  </div>
+                  <div className="col" style={{backgroundColor:'#e6e6ff', borderRadius:5}}>
+                      {_tableOrders.orders.map((orders) => (
+                              <div className="row" style={{marginBottom: 15, marginTop:5}}>
+                                  <div className="col-12">
+                                      <OrderWorkflowCard height={(35)*orders.item_list.length - 5} order={orders}/>
+                                  </div>
+                              </div>
+                          ))}
+                  </div>
+                </div>
+                ))}
+            </div>
+            <div className="panel panel-primary">
+                <div className="panel-heading">
+                  <div className="row">
+                    <div className="col">
+                      Message
+                    </div>
+                    <div className="col">
+                      Station
+                    </div>
+                    <div className="col">
+                      Content
+                    </div>
+                    <div className="col">
+                      Status
+                    </div>
+                  </div>
+                </div>
+                <div className="panel-body">
+                </div>
+            </div>
           </div>
-          <table className="order-table messages-table">
-            <thead>
-              <tr>
-                <th>Message</th>
-                <th>Station</th>
-                <th>Content</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.messages.map((message) => (
-                <tr onClick={() => this.showMessage(message)}>
-                  <td>{message.direction}</td>
-                  <td>{message.station}</td>
-                  <td>{message.content}</td>
-                  <td>{message.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
     )

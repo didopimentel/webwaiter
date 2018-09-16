@@ -1,26 +1,13 @@
 import React, { Component } from 'react'
-import { List, ListItem } from '@material-ui/core/List'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
 import Button from '@material-ui/core/Button'
-import { ItemModal } from '../components/ItemModal'
-import Modal from 'react-modal'
+import ItemModal from '../components/ItemModal'
 import '../styles/menu.css'
-import { MenuOfItems } from '../components/MenuOfItems'
+import MenuOfItems from '../components/MenuOfItems'
 import { menuActions } from '../actions/menuActions'
 import { orderActions } from '../actions/orderActions'
 import { Loading } from '../components/Loading'
 
-const modalStyle = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-}
 
 class Menu extends Component {
 
@@ -36,11 +23,13 @@ class Menu extends Component {
 
 
   componentDidMount() {
-    const { categories } = this.props
     const { dispatch } = this.props
+
     dispatch(menuActions.getAllDishes())
+
     dispatch(menuActions.getAllCategories())
   }
+  
 
   toggleModalOpen = (id) => {
     this.setState({
@@ -73,14 +62,14 @@ class Menu extends Component {
     const { categories } = this.props.categories
     const { category, currentDishId } = this.state
     const currentDish = this.state.modalOpen ?
-                          dishes.filter((_) => _.id == currentDishId)
+                          dishes.filter((_) => _.id === currentDishId)
                           : {}
 
     if ( this.props.dishes.requesting || this.props.categories.requesting ) {
-      return   <Loading type="spin" color="lightblue"/>
+      return   <div className="container"><Loading type="spin" color="lightblue"/></div>
     }
 
-    if (category == '' && categories) {
+    if (category === '' && categories) {
       this.setState({
         category: categories[0].name
       })

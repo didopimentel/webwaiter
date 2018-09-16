@@ -5,7 +5,8 @@ import { urls } from '../helpers/urls'
 export const staffService = {
   getAllOrders,
   getAllTables,
-  deactivateCall
+  deactivateCall,
+  updateTableCallStatus
 }
 
 

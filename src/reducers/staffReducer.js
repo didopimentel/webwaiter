@@ -1,5 +1,4 @@
 import { staffConstants } from '../constants/staffConstants'
-import { staffActions } from '../actions/staffActions'
 
 export function orders(state = {}, action){
   switch(action.type) {
