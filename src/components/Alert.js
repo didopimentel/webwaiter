@@ -5,7 +5,7 @@ export const Alert = (props) => {
 
     return (
         <div className="alert-container">
-            <p>{props.message}</p>
+            <p></p>
         </div>
     )
 }  
