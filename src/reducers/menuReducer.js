@@ -1,29 +1,12 @@
 import { menuConstants } from '../constants/menuConstants'
 
-let order = JSON.parse(localStorage.getItem('order'));
-const initialState = order ? order : []
+let order = localStorage.getItem('order') ? JSON.parse(localStorage.getItem('order')) : [];
+const initialState = order
 
 export function order(state = initialState, action) {
   switch(action.type) {
     case menuConstants.ORDER_DISH :
-      return (state.length > 0 ) ? state.map((order) => {
-        if (order.item_id !== action.id) {
-          return order
-        }
-        return {
-          ...order,
-          options: action.options,
-          quantity: action.quantity,
-        }
-      })
-      : [
-        ...state,
-        {
-          item_id: action.id,
-          options: action.options,
-          quantity: action.quantity
-        }
-      ]
+      return action.updatedOrders
     default :
       return state;
   }

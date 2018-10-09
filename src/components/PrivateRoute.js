@@ -7,7 +7,7 @@ export const PrivateRoute = (allowedRoles) => (WrappedComponent) => {
             if (allowedRoles.includes(role)) 
                 return <WrappedComponent {...this.props} />
             else {
-                return <div>Not allowed!</div>
+                return <div style={{paddingTop: '150px'}}>Not allowed!</div>
             }
         }
 

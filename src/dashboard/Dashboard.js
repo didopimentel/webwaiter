@@ -1,29 +1,86 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import TextField from '@material-ui/core/TextField'
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import { tableActions } from '../actions/tableActions'
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TableAndChair from './images/tableandchairs.svg'
+import { establishmentService } from '../services/establishmentService'
+import '../styles/webwaiter-styles.css'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia  from '@material-ui/core/CardMedia'
+
+
+const styles = theme => ({
+  button: {
+    margin: theme.spacing.unit,
+    width: '250px'
+  }
+});
 
 class Dashboard extends Component {
 
-  state = {
-    tableID: ''
+  constructor(props) {
+    super(props);
+    this.state = {
+      tableID: '',
+      tableNumber: '',
+      imageUrl: '',
+      tableArray: [],
+      index: 0
+    }
+  }
+
+
+  nextMedia = () => {
+    const { tableArray } = this.state
+    const index = (this.state.index === (tableArray.length-1)) ? 0 : this.state.index + 1;
+    this.setState({
+      tableID: tableArray[index]._id,
+      tableNumber: tableArray[index].number,
+      index
+    })
+  }
+
+  prevMedia = () => {
+    const { tableArray } = this.state;
+    const index = (this.state.index === 0) ? tableArray.length-1 : this.state.index - 1
+    this.setState({
+      tableID: tableArray[index]._id,
+      tableNumber: tableArray[index].number,
+      index
+    })
   }
 
   handleTableID(e) {
     this.setState({
-      tableID: e.target.value
+      tableID: e.target.value,
+      imageUrl: ''
     })
   }
 
   componentDidMount() {
-    const { tableAuthentication } = this.props
+    const { tableAuthentication, authentication } = this.props
     if (tableAuthentication) {
       if (tableAuthentication.tableAccess)
       this.props.history.push('/dashboard/menu')
     }
+    const code = authentication.establishmentCode.replace("\"", "").replace("\"", "");
+
+    establishmentService.getImageUrl(code)
+                        .then((url) => {
+                          this.setState({
+                            imageUrl: url,
+                          })
+                        })
+    establishmentService.getEstablishmentTables(code)
+                        .then((tables) => {
+                          this.setState({
+                            tableNumber: tables[0].number,
+                            tableID: tables[0]._id,
+                            tableArray: tables  
+                          })
+                        })
+
   }
 
   submitTable(e) {
@@ -36,69 +93,47 @@ class Dashboard extends Component {
   }
 
   render(){
+    const { classes } = this.props;
+    const { imageUrl, tableArray } = this.state
+    
+    if (tableArray.length == 0) return <div></div>
+
     return(
-      <div className="container mw-25" style={{marginTop:100}} >
-        <div className="panel panel-info">
-          <div className="panel-heading">
-            Please, insert your table number:
-          </div>
-          <div className="panel-body">
-            <div className="row text-center">
-              <div className="col-12 col-sm-6">
-                <TextField
-                  onChange={(e) => this.handleTableID(e)}
-                  style={{width: '20%'}}
-                  margin='dense'
-                  /*InputProps={{
-                    startAdornment: (
-                      <InputAdornment style={{padding:10}} >
-                        <img src={TableAndChair}/>
-                      </InputAdornment>
-                    )
-                  }}*/
-                />
-                </div>
-                <div className="col-12 col-sm-6 pt-3">
-                  <Button
-                    mini={true}
-                    className="btn btn-info"
-                    onClick={(e) => this.submitTable(e)}
-                    >
-                      OK
-                    </Button>
-                </div>
+      <div className="container">
+        <div className="text-center">
+          <img className="webwaiter-avatar" src={imageUrl} />
+        </div>
+        <div className="text-center">
+          Escolha a mesa:
+        </div>
+        <div className="body-container">
+          <Card style={{boxShadow:'none'}}>
+            <CardMedia
+              className="m-auto"
+              image="https://png.icons8.com/ios/50/000000/restaurant-table.png"
+              style={{width:50, height:50}}
+            />
+            <CardContent className="text-center">
+              { this.state.tableNumber }
+            </CardContent>
+            <div className="row pt-1">
+              <div className="col-12 text-center">
+                <span onClick={this.prevMedia} className="btn btn-info glyphicon glyphicon-menu-left" />
+                <span onClick={this.nextMedia} className="btn btn-info glyphicon glyphicon-menu-right" />
               </div>
             </div>
+          </Card>
+          <div className="webwaiter-footer webwaiter-vertical-container">
+            <Button 
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              onClick={(e) => this.submitTable(e)}
+            >
+              Entrar
+            </Button>
           </div>
-          <div className="panel panel-info">
-            <div className="panel-heading">
-              Separate bill?
-            </div>
-            <div className="panel-body">
-              <div className="row text-center">
-                <div className="col-4">
-                  <span className="glyphicon glyphicon-list display-2"></span>
-                </div>
-                <div className="col-8">
-                  <div className="row">
-                    <div className="col-3">Used:</div>
-                    <div className="col">
-                      <button className="btn btn-secondary badge" disabled>1</button>
-                      <button className="btn btn-secondary badge" disabled>2</button>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col-3">New:</div>
-                    <div className="col">
-                      <button className="btn btn-success badge">3</button>
-                      <button className="btn btn-success badge">4</button>
-                      <button className="btn btn-success badge">5</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+        </div>
       </div>
     )
   }
@@ -114,4 +149,4 @@ function mapStateToProps(state) {
 }
 
 
-export default connect(mapStateToProps)(Dashboard)
+export default connect(mapStateToProps)(withStyles(styles)(Dashboard))

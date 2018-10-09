@@ -1,0 +1,74 @@
+
+.webwaiter-homepage-header {
+    text-align: center;
+    margin: 0 auto;
+}
+
+
+
+
+.webwaiter-login-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+}
+
+.webwaiter-login-title {
+    justify-content: start;
+    align-items: flex-start;
+}
+
+.webwaiter-login-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+}
+
+.webwaiter-avatar {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
+
+.webwaiter-homepage-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.webwaiter-homepage-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (min-width: 250px) {
+    .container {
+        padding-top: 20px;
+    }
+    .webwaiter-homepage-body {
+        height: 150px;
+    }
+}
+
+@media screen and (min-width: 480px) {
+    .container {
+        padding-top: 70px;
+    }
+    .webwaiter-homepage-body {
+        height: 150px;
+    }
+}
+
+@media screen and (min-width : 768px) {
+    .container {
+        padding-top: 150px;
+    }
+    .webwaiter-homepage-body {
+        height: 150px;
+    }
+}

@@ -16,7 +16,7 @@ function getAllOrders() {
       method: 'GET',
       headers: header
   }
-  return fetch('http://localhost:3001/api/employees/orders', requestOptions)
+  return fetch(urls.API + 'employees/orders', requestOptions)
       .then(response => {
           if (!response.ok) {
               return Promise.reject(response.statusText);
@@ -33,7 +33,7 @@ function getAllOrders() {
 function getAllTables() {
   const header = authHeader()
   return axios.get(
-    'http://localhost:3001/api/employees/tables',
+    urls.API + 'employees/tables',
      { headers: header }
     )
     .then(response => {
@@ -62,7 +62,7 @@ function deactivateCall(number) {
   const header = authHeader()
 
   return axios.patch(
-    'http://localhost:3001/api/tables/' + number,
+    urls.API + 'tables/' + number,
      {headers: header}
     )
     .then(response => {

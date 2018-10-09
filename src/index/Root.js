@@ -3,14 +3,18 @@ import { connect } from 'react-redux'
 import { history } from '../helpers/history'
 import '../styles/main.css'
 import '../icons/dripicons-master/webfont/webfont.css'
+import '../styles/webwaiter-styles.css'
 import '../styles/material-dashboard-html-v2.1.0/assets/css/material-dashboard.css'
 import { Router, Route, Link } from 'react-router-dom'
+import { Alert } from '../components/Alert'
 import Dashboard from '../dashboard/Dashboard'
 import Application from '../containers/Application'
 import { PrivateRoute } from '../components/PrivateRoute'
-import Index from '../homepage/Index'
+import Index from '../homepage/Home'
+import Login from '../homepage/Login'
 import Menu from '../dashboard/Menu'
 import Home from '../dashboard/Home'
+import CategoryMenu from '../dashboard/CategoryMenu'
 import Checkout from '../dashboard/Checkout'
 import StaffHomePage from '../staff-homepage/StaffHomePage'
 import StaffDashboard from '../staff-dashboard/StaffDashboard'
@@ -32,25 +36,27 @@ const Backofhouse = PrivateRoute(['backofhouse', 'admin'])
 const Admin = PrivateRoute(['admin']) 
 
 const Root = (props) => {
-  const { loggedInTable, loggedInDashboard } = props
+  const { loggedInTable, loggedInDashboard, alert } = props
+  console.log(alert)
   return (
     <Router history={history}>
       <div className="root-container">
 
         <Helmet>
-          <style>{'body { background: -moz-linear-gradient(left, rgba(97,123,153,0) 0%, rgba(97,123,153,0.8) 8%, rgba(97,123,153,0.9) 10%, rgba(97,125,156,1) 12%, rgba(102,164,214,1) 50%, rgba(88,119,156,1) 88%, rgba(87,117,153,0.9) 90%, rgba(87,117,153,0.8) 92%, rgba(87,117,153,0) 100%); font-family: Roboto, sans-serif}'}</style>
+          <style>{'body { background: white; font-family: Roboto, sans-serif;}'}</style>
 
-}
         </Helmet>
 
-        <Application />
+        { loggedInDashboard && loggedInTable && history.location.pathname === '/' && history.push('/dashboard/menu')}
+        { !localStorage.getItem('token') && history.location.pathname !== '/' && history.location.pathname !== '/staff'  && history.push('/')}
 
-        { loggedInDashboard && loggedInTable && history.push('/dashboard/menu')}
+        { Object.keys(alert).length !== 0 && <Alert message={alert.message}/> }
 
         <Route exact path='/' component={Index} />
+        <Route path='/login/' component={Login} />
         <Route path='/establishmentRegister' component={EstablishmentRegister} />
-        <Route path='/admin/' component={AdminIndex} />
-        <Route path='/staff/(dashboard|menu|orders)' render={(props) => (
+        <Route path='/admin/' component={Admin(AdminIndex)} />
+        <Route path='/staff/(dashboard|menu|orders|category)' render={(props) => (
           <div className="header">
             <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" alt="Dashboard" width={50} className="header-icon" onClick={() => props.history.push('/staff/dashboard')}/>
             <div className="header-icon" onClick={() => props.history.push('/staff/menu')}>
@@ -69,7 +75,7 @@ const Root = (props) => {
           <Route path='/staff/backofhouse' component={StaffBackOfHouseDashboard} />
         <Route path="/dashboard/(menu|checkout|home)" render={(props) => (
           <Card>
-            <Tabs style={{paddingTop:50}} centered>
+            <Tabs centered>
               <Tab label="Home" component={Link} to="/dashboard/home" />
               <Tab label="Menu" component={Link} to="/dashboard/menu" />
               <Tab label="Checkout" component={Link} to="/dashboard/checkout" />
@@ -79,6 +85,7 @@ const Root = (props) => {
         <Route path="/dashboard/checkout" history={history} component={Checkout}/>
         <Route path="/dashboard/home" history={history} component={Home}/>
         <Route path='/dashboard/menu' history={history} component={Menu} />
+        <Route path='/dashboard/category' history={history} component={CategoryMenu} />
         <Route exact path='/dashboard' history={history} component={Dashboard}/>
       </div>
     </Router>
@@ -86,13 +93,14 @@ const Root = (props) => {
 }
 
 function mapStateToProps(state) {
-  const { tableAuthentication, authentication } = state;
+  const { tableAuthentication, authentication, alert } = state;
   const { loggedInTable } = tableAuthentication;
   const { loggedInDashboard } = authentication;
 
   return {
     loggedInTable,
-    loggedInDashboard
+    loggedInDashboard,
+    alert
   }
 }
 

@@ -8,7 +8,7 @@ export const menuActions = {
   getAllCategories
 }
 
-function requestDish(id, quantity, options) {
+function requestDish(id, quantity, price, options) {
   let currentOrders = localStorage.getItem('order')
                         ? JSON.parse(localStorage.getItem('order'))
                         : []
@@ -22,16 +22,19 @@ function requestDish(id, quantity, options) {
         return {
           ...item,
           quantity,
+          price,
           options
         }
       }
-      return { ...item }
+      else
+        return { ...item }
     })
   }
   if (!checkUpdated) {
     const o = {
       item_id: item_id,
       quantity: quantity,
+      price: price,
       options: options
     }
     currentOrders.push(o)
@@ -40,9 +43,7 @@ function requestDish(id, quantity, options) {
   localStorage.setItem('order', JSON.stringify(updatedOrders))
   return {
     type: menuConstants.ORDER_DISH,
-    id,
-    quantity,
-    options
+    updatedOrders
   }
 }
 

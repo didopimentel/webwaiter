@@ -3,12 +3,52 @@ import { orderService } from '../services/orderService'
 import { alertActions } from './alertActions';
 
 export const orderActions = {
+  orderItemsCustomer,
   orderItems,
   getOrdersPerTable,
   getBillPerCustomer,
   changeOrderItemStatus,
 }
 
+function orderItemsCustomer (order) {
+  return dispatch => {
+    dispatch(request())
+    orderService.orderItemsCustomer(order)
+      .then(
+        response => {
+          dispatch(success(response));
+          dispatch(alertActions.success('Pedido feito!'))
+          setTimeout(() => {
+            alertActions.clear();
+          }, 5000)
+          localStorage.removeItem('order');
+        },
+        error => {
+          dispatch(failure(error))
+          dispatch(alertActions.error(error))
+        }
+      )
+  }
+
+    function request() {
+      return {
+        type: orderConstants.POST_ORDER_REQUEST,
+        requesting: true
+      }
+    }
+    function success(order) {
+      return {
+        type: orderConstants.POST_ORDER_SUCCESS,
+        order
+      }
+    }
+    function failure(error) {
+      return {
+        type: orderConstants.POST_ORDER_FAILURE,
+        error
+      }
+    }
+}
 
 function orderItems(order, table) {
   return dispatch => {

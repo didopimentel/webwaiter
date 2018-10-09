@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
+import Input from '@material-ui/core/Input';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { adminService } from '../services/adminService';
@@ -17,7 +18,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 import { FilePicker } from 'react-file-picker';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import NativeSelect from '@material-ui/core/NativeSelect';
 
 const styles = theme => ({
     container: {
@@ -118,6 +119,7 @@ class Menu extends Component {
     render() {
         const { classes } = this.props
         const { items, categories } = this.state
+        console.log(categories)
         return (
         <div className="container">
             <div className="row">
@@ -158,19 +160,16 @@ class Menu extends Component {
                                     />
                                     <FormControl className={classNames(classes.margin, classes.textField)}>
                                         <InputLabel shrink htmlFor="select-category">Category</InputLabel>
-                                        <Select
+                                        <NativeSelect
                                             value={this.state.category}
-                                            onChange={(e) => this.handleChange('category')(e)}
-                                            inputProps={{
-                                            name: 'category',
-                                            id: 'select-category',
-                                            }}
+                                            onChange={this.handleChange('category')}
+                                            inputProps={<Input name="category" id="category-native-helper" />}
                                         >
                                             {categories && categories.map((category) => (
-                                                <MenuItem key={category._id} value={category.name}>{category.name}</MenuItem>
+                                                <option key={category._id} value={category.name}>{category.name}</option>
                                             ))}
-                                        </Select>
-                                        <FormHelperText>Please select the role for the employee</FormHelperText>
+                                        </NativeSelect>
+                                        <FormHelperText>Please select the category for the item</FormHelperText>
                                     </FormControl>
                                     <TextField
                                         label="Default queue time"

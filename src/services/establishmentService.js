@@ -7,6 +7,8 @@ export const establishmentService = {
     loginStaff,
     login,
     loginTable,
+    getImageUrl,
+    getEstablishmentTables,
     logout
 };
 
@@ -26,7 +28,7 @@ function createEstablishment (establishment) {
 }
 
 function loginStaff(username, password) {
-  return axios.post('http://localhost:3001/api/establishments/authenticate-staff', {
+  return axios.post(urls.API + '/establishments/authenticate-staff', {
     username,
     password
   })
@@ -49,7 +51,7 @@ function login(establishmentCode) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ establishmentCode })
     };
-    return fetch('http://localhost:3001/api/authentication/loginEstablishment', requestOptions)
+    return fetch(urls.API + 'authentication/loginEstablishment', requestOptions)
         .then(response => {
             if (!response.ok) {
                 return Promise.reject(response.statusText);
@@ -68,26 +70,48 @@ function login(establishmentCode) {
 }
 
 function loginTable(establishmentCode, table) {
-  const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ establishmentCode, table })
-  };
-  return fetch('http://localhost:3001/api/authentication/loginTableAnonymously', requestOptions)
-      .then(response => {
-          if (!response.ok) {
-              return Promise.reject(response.statusText);
-          }
-          return response.json();
-      })
-      .then(response => {
-          // login successful if there's a jwt token in the response
-          if (response && response.token) {
-              // store user details and jwt token in local storage to keep user logged in between page refreshes
-              localStorage.setItem('token', JSON.stringify(response.token));
-          }
-          return response;
-      });
+    return axios({
+        method: 'POST',
+        url: urls.API + 'authentication/loginTableAnonymously',
+        data: { establishmentCode, table }
+    }).then(response => {
+        // login successful if there's a jwt token in the response
+        if (response && response.data.token) {
+            // store user details and jwt token in local storage to keep user logged in between page refreshes
+            localStorage.setItem('token', JSON.stringify(response.data.token));
+        }
+        return response;
+    })
+    .catch( error => {
+        return Promise.reject(error)
+    })
+      
+}
+
+function getImageUrl (establishmentCode) {
+    const header = authHeader();
+    return axios({
+        method: 'GET',
+        url: urls.API + 'establishments/' + establishmentCode + '/logo',
+        headers: header
+    }).then( response => {
+        return response.data
+    })
+       .catch( error => {
+         return Promise.reject(error)
+    })
+}
+
+function getEstablishmentTables (establishmentCode) {
+    return axios({
+        method: 'GET',
+        url: urls.API + 'establishments/' + establishmentCode + '/tables' 
+    }).then( response => {
+        return response.data
+    })
+       .catch( error => {
+         return Promise.reject(error)
+    })
 }
 
 function logout() {

@@ -63,7 +63,7 @@ const MenuOfItems = (props) => {
     <Table className='table-container' fixedheader={false}>
       <TableHead className='table-header'>
         <TableRow className="table-row">
-          <TableCell padding='none' className="col-8 table-cell">Name</TableCell>
+          <TableCell style={{padding:'0 0 0 5px'}} className="col-8 table-cell">Name</TableCell>
           <TableCell style={{paddingRight:0}} className="col-2 table-cell ">Price</TableCell>
           <TableCell padding='none' className="col-1 table-cell ">Quantity</TableCell>
           <TableCell padding='default' className="col-1 table-cell ">Order</TableCell>
@@ -78,7 +78,7 @@ const MenuOfItems = (props) => {
                   owner={owner}
                   toggleModalOpen={toggleModalOpen}
                   name={dish.dish_name}
-                  id={dish.id}
+                  id={dish._id}
                   price={dish.price}
                />
              )

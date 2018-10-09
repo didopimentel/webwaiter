@@ -3,11 +3,29 @@ import axios from 'axios'
 import { urls } from '../helpers/urls'
 
 export const orderService = {
+  orderItemsCustomer,
   orderItems,
   getOrdersPerTable,
   getBillPerCustomer,
   checkoutOrder,
   changeOrderItemStatus
+}
+
+function orderItemsCustomer(items) {
+  const header = authHeader()
+  var order = {}
+  order["client_order"] = items
+  return axios({
+    method: 'POST',
+    url: urls.API + 'orders/client',
+    headers: header,
+    data: order
+  }).then( response => {
+    return response.data
+  })
+   .catch( error => {
+     return Promise.reject(error)
+   })
 }
 
 function orderItems(items, tableID) {
@@ -17,7 +35,7 @@ function orderItems(items, tableID) {
   order["table_id"] = tableID
   return axios({
     method: 'POST',
-    url: urls.API + 'orders/staff-order',
+    url: urls.API + 'orders/staff',
     headers: header,
     data: order
   }).then( response => {

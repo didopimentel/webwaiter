@@ -9,6 +9,7 @@ import AdminEmployees from './Employees'
 import AdminCategories from './Categories'
 import AdminMenu from './Menu'
 import AdminTable from './Tables'
+import AdminStations from './Stations'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
@@ -46,10 +47,12 @@ const AdminDrawer = ({props}) => (
                     <ListItemText>Categories</ListItemText>
                 </ListItem> 
             </Link>
-            <ListItem button>
-                <ListItemIcon><InboxIcon/></ListItemIcon>
-                <ListItemText>Daily</ListItemText>
-            </ListItem> 
+            <Link to={`${props.match.url}/stations`} style={{ textDecoration: 'none' }} >
+                <ListItem button>
+                    <ListItemIcon><InboxIcon/></ListItemIcon>
+                    <ListItemText>Stations</ListItemText>
+                </ListItem> 
+            </Link>
         </List>
     </Drawer>
 )
@@ -67,6 +70,7 @@ class AdminIndex extends Component {
                 { pathname == '/admin/categories' ? <AdminCategories /> : <div></div> }
                 { pathname == '/admin/menu' ? <AdminMenu /> : <div></div> }
                 { pathname == '/admin/tables' ? <AdminTable /> : <div></div> }
+                { pathname == '/admin/stations' ? <AdminStations /> : <div></div> }
             </div>
         )
     }

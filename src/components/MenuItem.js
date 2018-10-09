@@ -57,7 +57,7 @@ class MenuItem extends Component {
                       : 0
     return (
       <TableRow>
-        <TableCell padding='none' className="col-8">
+        <TableCell style={{padding:'0 0 0 5px'}} className="col-8">
           {this.props.name}
         </TableCell>
         <TableCell style={{paddingRight:10, paddingLeft:20}} className="col-2" >

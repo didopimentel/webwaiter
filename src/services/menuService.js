@@ -5,6 +5,7 @@ import { urls } from '../helpers/urls'
 export const menuService = {
     getAllDishes,
     getAllCategories,
+    getDishesOfCategory,
     getSpecificItem
 };
 
@@ -13,6 +14,21 @@ function getAllDishes() {
     return axios({
         method: 'GET',
         url: urls.API + 'menu/',
+        headers: header
+    }).then( response => {
+        localStorage.setItem('menu', JSON.stringify(response.data));
+        return response.data
+    })
+    .catch( error => {
+        return Promise.reject(error)
+    });
+}
+
+function getDishesOfCategory(categoryId) {
+    const header = authHeader();
+    return axios({
+        method: 'GET',
+        url: urls.API + 'categories/' + categoryId +'/menu/',
         headers: header
     }).then( response => {
         localStorage.setItem('menu', JSON.stringify(response.data));
@@ -44,7 +60,7 @@ function getSpecificItem(itemId, status) {
         method: 'GET',
         headers: header
     };
-    return fetch('http://localhost:3001/api/menu/' + itemId + '/defaultTime/' + status, requestOptions)
+    return fetch(urls.API + 'menu/' + itemId + '/defaultTime/' + status, requestOptions)
         .then(response => {
             if (!response.ok) {
                 return Promise.reject(response.statusText);
