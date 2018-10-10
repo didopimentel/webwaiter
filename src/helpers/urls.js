@@ -1,3 +1,4 @@
 export const urls = {
-  API: 'https://webwaiter.herokuapp.com/api/'
+  API: 'http://localhost:3001/api/'
+  //API: 'https://webwaiter.herokuapp.com/api/'
 }

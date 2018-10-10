@@ -50,7 +50,7 @@ const Root = (props) => {
         { loggedInDashboard && loggedInTable && history.location.pathname === '/' && history.push('/dashboard/menu')}
         { !localStorage.getItem('token') && history.location.pathname !== '/' && history.location.pathname !== '/staff'  && history.push('/')}
 
-        { Object.keys(alert).length !== 0 && <Alert message={alert.message}/> }
+        
 
         <Route exact path='/' component={Index} />
         <Route path='/login/' component={Login} />
