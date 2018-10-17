@@ -116,7 +116,7 @@ class Dashboard extends Component {
             <CardContent className="text-center">
               { this.state.tableNumber }
             </CardContent>
-            <div className="row pt-1">
+            <div className="row pt-1 pb-5">
               <div className="col-12 text-center">
                 <span onClick={this.prevMedia} className="btn btn-info glyphicon glyphicon-menu-left" />
                 <span onClick={this.nextMedia} className="btn btn-info glyphicon glyphicon-menu-right" />

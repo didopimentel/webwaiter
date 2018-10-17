@@ -115,7 +115,9 @@ class Checkout extends Component {
               ? 
               <SmallLoading type="spin" color="lightblue"/>
               : 
-              <Button className={classes.buttonSmall} style={styles.buttonSmall} color="primary" variant="contained">Pay to Waiter</Button>
+              <Button className={classes.buttonSmall} style={styles.buttonSmall} color="primary" variant="contained">
+                Pay to Waiter
+              </Button>
             }
           </div>
         </div>

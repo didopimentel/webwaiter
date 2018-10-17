@@ -17,6 +17,7 @@ import Home from '../dashboard/Home'
 import CategoryMenu from '../dashboard/CategoryMenu'
 import Checkout from '../dashboard/Checkout'
 import StaffHomePage from '../staff-homepage/StaffHomePage'
+import Orders from '../staff-dashboard/Orders'
 import StaffDashboard from '../staff-dashboard/StaffDashboard'
 import StaffOrders from '../staff-dashboard/StaffOrders'
 import StaffMenu from '../staff-dashboard/StaffMenu'
@@ -48,7 +49,11 @@ const Root = (props) => {
         </Helmet>
 
         { loggedInDashboard && loggedInTable && history.location.pathname === '/' && history.push('/dashboard/menu')}
-        { !localStorage.getItem('token') && history.location.pathname !== '/' && history.location.pathname !== '/staff'  && history.push('/')}
+        { !localStorage.getItem('token') 
+          && history.location.pathname !== '/' 
+          && history.location.pathname !== '/staff'  
+          && history.location.pathname !== '/admin'
+          && history.push('/')}
 
         
 
@@ -56,6 +61,7 @@ const Root = (props) => {
         <Route path='/login/' component={Login} />
         <Route path='/establishmentRegister' component={EstablishmentRegister} />
         <Route path='/admin/' component={Admin(AdminIndex)} />
+        <Route path='/staff/stafforders' component={Orders} />
         <Route path='/staff/(dashboard|menu|orders|category)' render={(props) => (
           <div className="header">
             <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" alt="Dashboard" width={50} className="header-icon" onClick={() => props.history.push('/staff/dashboard')}/>

@@ -135,6 +135,10 @@
     color: rgba(124, 124, 124, 0.199);
 }
 
+.orders-container {
+    margin: 0 auto;
+}
+
 @media screen and (min-width: 250px) {
     .container {
         padding-top: 20px;
@@ -153,7 +157,6 @@
         border-radius: 4px;
         height: 150px
     }
-
 }
 
 @media screen and (min-width: 480px) and (max-width: 768px) {
@@ -177,8 +180,6 @@
         width: 100%;
         height: 200px
     }
-
-
 }
 
 @media screen and (min-width : 768px) {
