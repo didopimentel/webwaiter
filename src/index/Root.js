@@ -10,6 +10,8 @@ import { Alert } from '../components/Alert'
 import Dashboard from '../dashboard/Dashboard'
 import Application from '../containers/Application'
 import { PrivateRoute } from '../components/PrivateRoute'
+import { establishmentActions } from '../actions/establishmentActions'
+import { tableActions } from '../actions/tableActions'
 import Index from '../homepage/Home'
 import Login from '../homepage/Login'
 import Menu from '../dashboard/Menu'
@@ -30,6 +32,7 @@ import WaiterHeaderIcon from './images/waiter-header.png'
 import AdminIndex from '../admin-dashboard/AdminIndex'
 import EstablishmentRegister from '../register/EstablishmentRegister'
 import { Helmet } from 'react-helmet'
+import Button from '@material-ui/core/Button';
 
 const User = PrivateRoute(['user'], ['anonymous'])
 const Employee = PrivateRoute(['employee', 'admin'])
@@ -37,12 +40,33 @@ const Backofhouse = PrivateRoute(['backofhouse', 'admin'])
 const Admin = PrivateRoute(['admin']) 
 
 const Root = (props) => {
+
+  const logout = () => {
+    props.dispatch(establishmentActions.logout())
+    props.dispatch(tableActions.logout())  
+  }
+
   const { loggedInTable, loggedInDashboard, alert } = props
-  console.log(alert)
   return (
     <Router history={history}>
+      
       <div className="root-container">
-
+        <header className="header-container">
+          <div className="header-container-right">
+            { history.location.pathname !== '/'
+              && history.location.pathname !== '/login'
+              && history.location.pathname !== '/staff'
+              && (
+              <Button 
+                onClick={() => logout()}
+                variant="contained" 
+              >
+                Logout
+              </Button>
+              )
+            }
+          </div>
+        </header>
         <Helmet>
           <style>{'body { background: white; font-family: Roboto, sans-serif;}'}</style>
 

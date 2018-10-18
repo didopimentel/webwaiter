@@ -115,7 +115,8 @@ function getEstablishmentTables (establishmentCode) {
 }
 
 function logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('establishment');
+    localStorage.removeItem('loggedInDashboard');
     localStorage.removeItem('token');
+    localStorage.removeItem('establishmentCode');
+    localStorage.removeItem('menu');
 }

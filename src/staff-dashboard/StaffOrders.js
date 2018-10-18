@@ -89,7 +89,7 @@ class StaffOrders extends Component {
                     </div>
                     <div className="col">
                         {_tableOrders.orders.map(orders => (
-                            <div className="row"  style={{marginBottom: 10, marginTop: 5, marginRight:'1px', backgroundColor: 'rgba(210,212,216,0.3)', borderRadius:'3px'}}>
+                            <div className="row"  style={{marginBottom: 10, marginTop: 5, borderRadius:'3px'}}>
                                 <div className="col-12">
                                 {orders.item_list.map((items) => (
                                       <div className="row" style={{marginBottom: 5}}>
@@ -111,9 +111,9 @@ class StaffOrders extends Component {
                               <div className="col-12">
                               {_orders.item_list.map(_order => (
                                   <div className="row"  style={{marginBottom: 5}}>
-                                      <div className="col-12" style={{height:30}}>
+                                      <div className="col-12" style={{height:30, overflow:'hidden'}}>
                                           <span style={{verticalAlign:'middle'}}>
-                                              {_order.dish_name}
+                                              {(_order.dish_name.length <= 20) ? _order.dish_name : _order.dish_name.substring(0, 20) + '...'}
                                           </span>
                                       </div>  
                                   </div>
