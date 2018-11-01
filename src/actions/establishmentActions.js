@@ -20,9 +20,9 @@ function loginStaff(username, password) {
           dispatch(add(response.role))
           localStorage.setItem('token', response.token);
           localStorage.setItem('role', response.role);
-          if (response.role === 'backofhouse') history.push('/staff/backofhouse');
-          if (response.role === 'admin') history.push('/admin/');
-          else history.push('/staff/dashboard');
+          if (response.role == 'backofhouse') history.push('/staff/backofhouse');
+          if (response.role == 'admin') history.push('/admin/');
+          if (response.role == 'employee') history.push('/staff/dashboard');
         },
         error => {
           let message;

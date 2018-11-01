@@ -19,7 +19,6 @@ import Home from '../dashboard/Home'
 import CategoryMenu from '../dashboard/CategoryMenu'
 import Checkout from '../dashboard/Checkout'
 import StaffHomePage from '../staff-homepage/StaffHomePage'
-import Orders from '../staff-dashboard/Orders'
 import StaffDashboard from '../staff-dashboard/StaffDashboard'
 import StaffOrders from '../staff-dashboard/StaffOrders'
 import StaffMenu from '../staff-dashboard/StaffMenu'
@@ -33,40 +32,24 @@ import AdminIndex from '../admin-dashboard/AdminIndex'
 import EstablishmentRegister from '../register/EstablishmentRegister'
 import { Helmet } from 'react-helmet'
 import Button from '@material-ui/core/Button';
+import TopBar from '../components/TopBar'
 
 const User = PrivateRoute(['user'], ['anonymous'])
 const Employee = PrivateRoute(['employee', 'admin'])
 const Backofhouse = PrivateRoute(['backofhouse', 'admin'])
 const Admin = PrivateRoute(['admin']) 
 
+
 const Root = (props) => {
 
-  const logout = () => {
-    props.dispatch(establishmentActions.logout())
-    props.dispatch(tableActions.logout())  
-  }
 
+  const role = localStorage.getItem('role');
   const { loggedInTable, loggedInDashboard, alert } = props
   return (
     <Router history={history}>
       
       <div className="root-container">
-        <header className="header-container">
-          <div className="header-container-right">
-            { history.location.pathname !== '/'
-              && history.location.pathname !== '/login'
-              && history.location.pathname !== '/staff'
-              && (
-              <Button 
-                onClick={() => logout()}
-                variant="contained" 
-              >
-                Logout
-              </Button>
-              )
-            }
-          </div>
-        </header>
+        <TopBar/>
         <Helmet>
           <style>{'body { background: white; font-family: Roboto, sans-serif;}'}</style>
 
@@ -79,13 +62,10 @@ const Root = (props) => {
           && history.location.pathname !== '/admin'
           && history.push('/')}
 
-        
-
         <Route exact path='/' component={Index} />
         <Route path='/login/' component={Login} />
         <Route path='/establishmentRegister' component={EstablishmentRegister} />
         <Route path='/admin/' component={Admin(AdminIndex)} />
-        <Route path='/staff/stafforders' component={Orders} />
         <Route path='/staff/(dashboard|menu|orders|category)' render={(props) => (
           <div className="header">
             <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" alt="Dashboard" width={50} className="header-icon" onClick={() => props.history.push('/staff/dashboard')}/>
@@ -94,9 +74,6 @@ const Root = (props) => {
             </div>
             <img src={WaiterHeaderIcon} alt="Orders" className="header-icon" onClick={() => props.history.push('/staff/orders')}/>
           </div>
-        )}/>
-        <Route path='/staff/backofhouse' render={(props) => (
-          <div className="header"></div>
         )}/>
         <Route exact path='/staff' component={StaffHomePage} />
           <Route path='/staff/dashboard' component={StaffDashboard} />

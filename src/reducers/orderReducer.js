@@ -27,7 +27,7 @@ export function orders(state = {requestingOrders: true}, action){
       }
     case orderConstants.CHANGE_ORDER_ITEM_STATUS_SUCCESS:
       var index = state.ordersPerTable[action.table].orders.map((o) => {return o._id}).indexOf(action.order._id);
-      var newState = state.ordersPerTable;
+      var newState = [].concat(state.ordersPerTable);
       newState[action.table].orders[index] = action.order
       return {
         ...state,
