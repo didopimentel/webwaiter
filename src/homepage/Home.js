@@ -5,14 +5,18 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
-    button: {
-      margin: theme.spacing.unit,
-      width: '250px'
-    },
-    input: {
-      display: 'none',
-    },
-  });
+  root: {
+    flexGrow: 1,
+    padding: `${theme.spacing.unit * 2}px`,
+  },
+  button: {
+    margin: theme.spacing.unit,
+    width: '250px'
+  },
+  input: {
+    display: 'none',
+  },
+});
 
 class Home extends Component {
     state = {
@@ -22,7 +26,7 @@ class Home extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <div className="container">
+            <div className={classes.root}>
                 <div className="webwaiter-homepage-header">
                     <img className="webwaiter-avatar" src={Logo}/>
                 </div>

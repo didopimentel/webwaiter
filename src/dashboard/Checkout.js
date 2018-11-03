@@ -20,6 +20,13 @@ const styles = theme => ({
     fontSize: 12,
     height: 50
   },
+  table: {
+    tableLayout: 'fixed',
+    [theme.breakpoints.up('sm')]: {
+      tableLayout: 'auto',
+      width: 'auto',
+    }
+  },
   tableFooter: {
     fontSize: 20,
     margin: theme.spacing.unit,
@@ -66,10 +73,10 @@ class Checkout extends Component {
     }
     return(
       <div className="container mt-3">
-        <Table>
+        <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell style={{padding:0, margin:0}} component="th" scope="row"> Item </TableCell>
+              <TableCell style={{padding:0, margin:0, wordWrap: 'break-word'}} component="th" scope="row"> Item </TableCell>
               <TableCell style={{padding:0, margin:0}} className="text-center"> Quantity </TableCell>
               <TableCell style={{padding:0, margin:0}} className="text-right"> Unit Price </TableCell>
             </TableRow>
@@ -77,14 +84,14 @@ class Checkout extends Component {
           <TableBody>
             { billCustomer.bill && billCustomer.bill.map((_item) => (
               <TableRow>
-                <TableCell style={{padding:0, margin:0}}>{_item.dish_name}</TableCell>
-                <TableCell className="text-center" style={{padding:0, margin:0}}>{_item.quantity}</TableCell>
-                <TableCell className="text-right" style={{padding:0, margin:0}}>R${_item.price}</TableCell>
+                <TableCell component="th" scope="row" style={{padding:0, margin:0}}>{_item.dish_name}</TableCell>
+                <TableCell className="text-center" numeric style={{padding:0, margin:0}}>{_item.quantity}</TableCell>
+                <TableCell className="text-right" numeric style={{padding:0, margin:0}}>R${_item.price}</TableCell>
               </TableRow>
             )) }
           </TableBody>
           <TableFooter>
-            <TableRow className="">
+            <TableRow>
               <TableCell style={{width: '100%'}}></TableCell>
               <TableCell>
                 <h5>Total:</h5>
