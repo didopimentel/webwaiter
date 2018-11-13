@@ -117,26 +117,31 @@ class CategoryMenu extends Component {
           <div className="webwaiter-history-control-header">
             <Button onClick={() => this.props.history.push('/dashboard/home')} >
                 <ChevronLeft  />
-                Voltar
+                <Typography variant="button">
+                  Voltar
+                </Typography>
             </Button >
           </div>
-          <p className="category-name">{categoryName}</p>
+          <Typography variant="h5" className="category-name">{categoryName}</Typography>
           <div className="webwaiter-horizontal-container">
             <div className="item-container">
               <div className="item-unit">
                 { menu.length > 0 && menu.map((item) => (
                   <ExpansionPanel key={item._id}>
                     <ExpansionPanelSummary>
-                      <Typography>{item.dish_name}</Typography>
+                      <Typography
+                        variant="body2"
+                      >
+                        {item.dish_name}
+                      </Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails style={{paddingLeft: '30px'}} >
                       <div style={{display: 'flex', flexDirection: 'column', width: '100%'}} >
-                        <h4>{item.description}</h4>
-                        <p className="text-gray"> Quantidade </p>
+                        <Typography variant="body2">{item.description}</Typography>
                         <div>
                           <TextField
                             id="outlined-number"
-                            label="Number"
+                            label="Quantidade"
                             value={this.state.number}
                             onChange={(e) => this.handleQuantityItem(item._id, item.price, e.target.value)}
                             type="number"

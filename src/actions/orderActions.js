@@ -8,6 +8,7 @@ export const orderActions = {
   getOrdersPerTable,
   getBillPerCustomer,
   changeOrderItemStatus,
+  postOrderPayment
 }
 
 function orderItemsCustomer (order) {
@@ -190,6 +191,40 @@ function changeOrderItemStatus(orderId, itemId, table, prevStatus, nextStatus) {
     function failure(error) {
       return {
         type: orderConstants.CHANGE_ORDER_ITEM_STATUS_FAILURE,
+        error
+      }
+    }
+
+}
+
+function postOrderPayment(amount) {
+  return dispatch => {
+    dispatch(request())
+    orderService.checkoutOrder(amount)
+      .then(
+        response => {
+          dispatch(success());
+        },
+        error => {
+          dispatch(failure(error))
+          dispatch(alertActions.error(error))
+        }
+      )
+  }
+
+    function request() {
+      return {
+        type: orderConstants.POST_ORDER_PAYMENT_REQUEST,
+      }
+    }
+    function success() {
+      return {
+        type: orderConstants.POST_ORDER_PAYMENT_SUCCESS,
+      }
+    }
+    function failure(error) {
+      return {
+        type: orderConstants.POST_ORDER_PAYMENT_FAILURE,
         error
       }
     }

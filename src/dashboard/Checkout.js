@@ -9,6 +9,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableFooter from '@material-ui/core/TableFooter';
 import Button from '@material-ui/core/Button';
+import Wifi from '@material-ui/icons/Wifi'
+import Person from '@material-ui/icons/Person'
 import { orderService } from '../services/orderService'
 import { Loading, SmallLoading } from '../components/Loading'
 
@@ -20,6 +22,10 @@ const styles = theme => ({
     fontSize: 12,
     height: 50
   },
+  iconSmall: {
+    fontSize: 20,
+    marginRight: theme.spacing.unit
+  },
   tableFooter: {
     fontSize: 20,
     margin: theme.spacing.unit,
@@ -28,44 +34,29 @@ const styles = theme => ({
 })
 
 class Checkout extends Component {
-  
-  state = {
-    paying: false    
-  }
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(orderActions.getBillPerCustomer())
   }
 
-  async checkoutOnline(e) {
+  checkoutOnline(e) {
     const { billCustomer } = this.props;
     e.preventDefault();
     var amount = billCustomer.bill ? billCustomer.bill.reduce((acc, cur) => acc + (cur.price * cur.quantity), 0)
-                              : 0
-    this.setState({
-      paying: true
-    })
+                                   : 0
     if (amount) {
-      await orderService.checkoutOrder(amount)
-        .then(response => {
-          if (response) {
-            this.setState({
-              paying: false
-            })
-          }
-        })
+      orderActions.postOrderPayment(amount);
     }
   }
 
   render () {
     const { billCustomer, classes } = this.props
-    const { paying } = this.state
     if (billCustomer.requesting) {
       return <div><Loading type="spin" color="lightblue" /> </div>
     }
     return(
-      <div className="container mt-3">
+      <div className="container">
         <Table>
           <TableHead>
             <TableRow>
@@ -95,10 +86,10 @@ class Checkout extends Component {
             </TableRow>
           </TableFooter>
         </Table>
-        <div className="row pt mt-auto m-3 p-0">
-          <div className="col-6 col-md-4 offset-md-2">
+        <div className="row">
+          <div className="col-6 col-md-2 offset-md-4">
             {
-              paying 
+              billCustomer && billCustomer.requestingPayment 
               ? 
               <SmallLoading type="spin" color="lightblue"/>
               : 
@@ -106,17 +97,21 @@ class Checkout extends Component {
                 className={classes.buttonSmall} 
                 color="primary" 
                 variant="contained"
-                onClick={(e) => this.checkoutOnline(e)}>Pay Online!</Button>
+                onClick={(e) => this.checkoutOnline(e)}>
+                  <Wifi className={classes.iconSmall}/>
+                Pagar Online!
+              </Button>
             }
           </div>
-          <div className="col-6 col-md-4 offset-md-2">
+          <div className="col-6 col-md-2">
             {
-              paying 
+              billCustomer && billCustomer.requestingPayment 
               ? 
               <SmallLoading type="spin" color="lightblue"/>
               : 
               <Button className={classes.buttonSmall} style={styles.buttonSmall} color="primary" variant="contained">
-                Pay to Waiter
+                <Person className={classes.iconSmall}/>
+                Pagar ao garçom
               </Button>
             }
           </div>

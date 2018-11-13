@@ -54,7 +54,21 @@ export function billCustomer(state = {}, action) {
         bill: action.ordersPerTable
       }
     case orderConstants.GET_BILL_PER_CUSTOMER_FAILURE:
-      return {}
+      return {
+        requesting: false,
+      }
+    case orderConstants.POST_ORDER_PAYMENT_REQUEST:
+      return {
+        requestingPayment: true,
+      }
+    case orderConstants.POST_ORDER_PAYMENT_SUCCESS:
+      return {
+        requestingPayment: false
+      }
+    case orderConstants.POST_ORDER_PAYMENT_SUCCESS:
+      return {
+        requestingPayment: false
+    }
     default:
       return state;
   }
