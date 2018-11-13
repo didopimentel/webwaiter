@@ -1,7 +1,45 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import './css/main.css'
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import '../styles/webwaiter-styles.css';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import { establishmentActions } from '../actions/establishmentActions'
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+    padding: `${theme.spacing.unit * 2}px`,
+  },
+  button: {
+    margin: theme.spacing.unit,
+    width: '100%'
+  },
+  buttonSmall: {
+    width: '100px' 
+  },
+  input: {
+    display: 'none',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: '100%',
+  },
+  typography: {
+    color: theme.palette.text.primary,
+    padding: theme.spacing.unit * 2
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  wrapper:{
+    margin: '0 auto',
+    maxWidth: 400
+  }
+});
 
 class StaffHomePage extends Component {
 
@@ -20,44 +58,57 @@ class StaffHomePage extends Component {
     ))
   }
 
-  staffIdHandler(e){
+  handleChange = name => event => {
     this.setState({
-        staffId: e.target.value
-    })
-  }
-
-  staffPasswordHandler(e){
-    this.setState({
-        password: e.target.value
-    })
-  }
+      [name]: event.target.value,
+    });
+  };
+  
   render(){
+    const { classes } = this.props;
     return(
-      <div className="container">
-        <div className="login-page">
-           <div className="form">
-                <div className="form-title">Staff Access</div>
-                <form className="login-form">
-                  <input
-                    type="text"
-                    placeholder="username"
-                    onChange={(e) => this.staffIdHandler(e)}
-                  />
-                  <input
-                    type="password"
-                    placeholder="password"
-                    onChange={(e) => this.staffPasswordHandler(e)}
-                  />
-                  <button
-                    className="btn btn-primary"
-                    onClick={(e) => this.loginStaff(e)}
-                  >login</button>
-                </form>
-              </div>
+      <div className={classes.root}>
+        <div className={classes.wrapper}>
+          <Grid container spacing={24} className={classes.centralizedGrid}>
+            <Grid item xs={12}>
+              <Typography
+                className={classes.typography}
+                variant="headline" 
+                color="inherit"
+              >
+                Área do Colaborador
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <TextField 
+                label="Usuário"
+                onChange={(e) => this.handleChange('staffId')(e)}
+                className={classes.textField}
+                margin="normal"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Senha"
+                onChange={(e) => this.handleChange('password')(e)}
+                className={classes.textField}
+                margin="normal"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={(e) => this.loginStaff(e)}
+                className={classes.button}>
+                Confirmar
+              </Button>
+            </Grid>
+          </Grid>
         </div>
       </div>
     )
   }
   }
 
-export default connect()(StaffHomePage)
+export default connect()(withStyles(styles)(StaffHomePage))

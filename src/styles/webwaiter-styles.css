@@ -162,6 +162,12 @@
 
 .table-backofhouse {
     max-width: 1200px;
+    border: 1px solid blue;
+    width: 1000px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    text-align: center !important;
+    padding: 0;
 }
 
 .table-backofhouse {
@@ -183,13 +189,14 @@
 }
 
 .table-backofhouse td {
-    border: 1px solid blue;
-    width: 1000px;
-    margin: 0 auto;
-    border-collapse: collapse;
-    text-align: center !important;
-    padding: 0;
+  border: 1px solid blue;
+  width: 1000px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  text-align: center !important;
+  padding: 0;
 }
+
 
 .innerTable-backofhouse { 
     border: 0;
