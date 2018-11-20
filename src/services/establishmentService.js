@@ -51,22 +51,15 @@ function login(establishmentCode) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ establishmentCode })
     };
-    return fetch(urls.API + 'authentication/loginEstablishment', requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                return Promise.reject(response.statusText);
-            }
-            return response.json();
+    return axios.post(urls.API + 'authentication/loginEstablishment', { establishmentCode })
+        .then((response) => {
+            localStorage.setItem('establishmentCode', JSON.stringify(response.data.code));
+            localStorage.setItem('loggedInDashboard', true)
+            return response.data
         })
-        .then(response => {
-            // login successful if there's a jwt token in the response
-            if (response && response.code) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('establishmentCode', JSON.stringify(response.code));
-                localStorage.setItem('loggedInDashboard', true)
-            }
-            return response;
-        });
+        .catch((error) => {
+            return Promise.reject(error);
+        })
 }
 
 function loginTable(establishmentCode, table) {

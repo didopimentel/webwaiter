@@ -6,7 +6,9 @@ import { tableActions } from '../actions/tableActions'
 import { establishmentService } from '../services/establishmentService'
 import '../styles/webwaiter-styles.css'
 import Card from '@material-ui/core/Card'
+import Description from '@material-ui/icons/Description'
 import CardContent from '@material-ui/core/CardContent'
+import Badge from '@material-ui/core/Badge';
 import CardMedia  from '@material-ui/core/CardMedia'
 
 
@@ -14,6 +16,9 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
     width: '250px'
+  },
+  icon: {
+    fontSize: 20
   }
 });
 
@@ -123,6 +128,19 @@ class Dashboard extends Component {
               </div>
             </div>
           </Card>
+          <div className="row">
+            <div className="col-12">
+              <Typography>
+                Separar as contas?
+              </Typography>
+            </div>
+            <div className="col-3">
+              <Description className={classes.icon} />
+            </div>
+            <div className="col-8">
+              
+            </div>
+          </div>
           <div className="webwaiter-footer webwaiter-vertical-container">
             <Button 
               variant="contained"

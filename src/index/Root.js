@@ -10,8 +10,7 @@ import { Alert } from '../components/Alert'
 import Dashboard from '../dashboard/Dashboard'
 import Application from '../containers/Application'
 import { PrivateRoute } from '../components/PrivateRoute'
-import { establishmentActions } from '../actions/establishmentActions'
-import { tableActions } from '../actions/tableActions'
+import { alertActions } from '../actions/alertActions'
 import Index from '../homepage/Home'
 import Login from '../homepage/Login'
 import Menu from '../dashboard/Menu'
@@ -28,67 +27,82 @@ import WaiterHeaderIcon from './images/waiter-header.png'
 import AdminIndex from '../admin-dashboard/AdminIndex'
 import EstablishmentRegister from '../register/EstablishmentRegister'
 import { Helmet } from 'react-helmet'
-import Button from '@material-ui/core/Button';
 import TopBar from '../components/TopBar';
 import CustomerHeader from '../components/CustomerHeader'
+import { withAlert } from 'react-alert'
+import { sessionInformationActions } from '../actions/sessionInformationActions'
 
 const User = PrivateRoute(['user'], ['anonymous'])
 const Employee = PrivateRoute(['employee', 'admin'])
 const Backofhouse = PrivateRoute(['backofhouse', 'admin'])
-const Admin = PrivateRoute(['admin']) 
+const Admin = PrivateRoute(['admin'])
 
 class Root extends Component {
-
-  componentDidMount() {
-    
+  
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    const currentAlert = this.props.alert;
+    const previousAlert = prevProps.alert;
+    if((Object.keys(currentAlert).length !== 0 && currentAlert.constructor === Object) && currentAlert != previousAlert) {
+      setTimeout(
+        () => this.clearAlert(), 5000
+      );
+    }
   }
 
-  render () {
-    const role = localStorage.getItem('role');
-    const { loggedInTable, loggedInDashboard, alert } = this.props
+  componentDidMount() {
+    this.props.dispatch(sessionInformationActions.getBillNumber());
+    this.props.dispatch(sessionInformationActions.getTableNumber());
+  }
+  
+  clearAlert = () => {
+    this.props.dispatch(alertActions.clear())
+  }
+
+  render() {
+    const { loggedInTable, loggedInDashboard, alert, sessionInformation } = this.props
     return (
       <Router history={history}>
-        
+
         <div className="root-container">
-          <TopBar/>
+          <TopBar />
           <Helmet>
             <style>{'body { background: white; font-family: Roboto, sans-serif;}'}</style>
-  
+
           </Helmet>
-    
-          { loggedInDashboard && loggedInTable && history.location.pathname === '/' && history.push('/dashboard/menu')}
-          { !localStorage.getItem('token') 
-            && history.location.pathname !== '/' 
-            && history.location.pathname !== '/staff'  
+
+          {loggedInDashboard && loggedInTable && history.location.pathname === '/' && history.push('/dashboard/menu')}
+          {!localStorage.getItem('token')
+            && history.location.pathname !== '/'
+            && history.location.pathname !== '/staff'
             && history.location.pathname !== '/admin'
             && history.push('/')}
-  
+
           <Route exact path='/' component={Index} />
           <Route path='/login/' component={Login} />
           <Route path='/establishmentRegister' component={EstablishmentRegister} />
           <Route path='/admin/' component={Admin(AdminIndex)} />
           <Route path='/staff/(dashboard|menu|orders|category)' render={(props) => (
             <div className="header">
-              <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" alt="Dashboard" width={50} className="header-icon" onClick={() => props.history.push('/staff/dashboard')}/>
+              <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" alt="Dashboard" width={50} className="header-icon" onClick={() => props.history.push('/staff/dashboard')} />
               <div className="header-icon" onClick={() => props.history.push('/staff/menu')}>
-                <Typography style={{fontSize:20}} >MENU</Typography>
+                <Typography style={{ fontSize: 20 }} >MENU</Typography>
               </div>
-              <img src={WaiterHeaderIcon} alt="Orders" className="header-icon" onClick={() => props.history.push('/staff/orders')}/>
+              <img src={WaiterHeaderIcon} alt="Orders" className="header-icon" onClick={() => props.history.push('/staff/orders')} />
             </div>
-          )}/>
+          )} />
           <Route exact path='/staff' component={StaffHomePage} />
-            <Route path='/staff/dashboard' component={StaffDashboard} />
-            <Route path='/staff/menu' component={StaffMenu} />
-            <Route path='/staff/orders' component={StaffOrders} />
-            <Route path='/staff/backofhouse' component={StaffBackOfHouseDashboard} />
+          <Route path='/staff/dashboard' component={StaffDashboard} />
+          <Route path='/staff/menu' component={StaffMenu} />
+          <Route path='/staff/orders' component={StaffOrders} />
+          <Route path='/staff/backofhouse' component={StaffBackOfHouseDashboard} />
           <Route path="/dashboard/(menu|checkout|home)" render={(props) => (
-            <CustomerHeader/>
-          )}/>
-          <Route path="/dashboard/checkout" history={history} component={Checkout}/>
-          <Route path="/dashboard/home" history={history} component={Home}/>
+            <CustomerHeader billNumber={sessionInformation.billNumber} tableNumber={sessionInformation.tableNumber}  />
+          )} />
+          <Route path="/dashboard/checkout" history={history} component={Checkout} />
+          <Route path="/dashboard/home" history={history} component={Home} />
           <Route path='/dashboard/menu' history={history} component={Menu} />
           <Route path='/dashboard/category' history={history} component={CategoryMenu} />
-          <Route exact path='/dashboard' history={history} component={Dashboard}/>
+          <Route exact path='/dashboard' history={history} component={Dashboard} />
         </div>
       </Router>
     )
@@ -96,15 +110,16 @@ class Root extends Component {
 }
 
 function mapStateToProps(state) {
-  const { tableAuthentication, authentication, alert } = state;
+  const { tableAuthentication, authentication, alert, sessionInformation } = state;
   const { loggedInTable } = tableAuthentication;
   const { loggedInDashboard } = authentication;
 
   return {
     loggedInTable,
     loggedInDashboard,
-    alert
+    alert,
+    sessionInformation
   }
 }
 
-export default connect(mapStateToProps)(Root)
+export default connect(mapStateToProps)(withAlert(Root))

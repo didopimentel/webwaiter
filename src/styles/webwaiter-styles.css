@@ -25,25 +25,22 @@
 
 .alert-container {
     position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
     z-index: 9999;
-    background: rgba(0, 97, 153, 0.85);
     border-radius: 5px;
-    text-align: center;
-    vertical-align: middle;
-    max-width: 200px;
-    min-width: 100px;
+    width: 250px;
     height: 100px;
+    border: 2px solid rgba(206, 31, 54, 0.192);
 }
 
-.alert-container p {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
+.alert-container alert-danger{
+    color: red;
+}
+
+.alert-container alert-success{
+    color: green;
 }
 
 .body-container {
