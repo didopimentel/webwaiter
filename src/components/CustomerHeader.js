@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles'; 
 import Receipt from '@material-ui/icons/Receipt'
 import RecordVoiceOver from '@material-ui/icons/RecordVoiceOver'
@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography'
 import blue from '@material-ui/core/colors/blue';
 import Tooltip from '@material-ui/core/Tooltip';
 import { tableService } from '../services/tableService';
+import { sessionInformationActions } from '../actions/sessionInformationActions'
 
 const styles = theme => ({
     root: {
@@ -53,61 +54,78 @@ const styles = theme => ({
     }
   })
 
-const callWaiter = () => {
-  tableService.callWaiter(); 
-  document.getElementById('tooltip-callwaiter').style.display = 'block';
-  setTimeout(function(){
-    document.getElementById('tooltip-callwaiter').style.display = 'none';
-  }, 3000)
+  
+  class CustomerHeader extends Component {
+    
+    componentDidMount() {
+      this.props.dispatch(sessionInformationActions.getBillNumber());
+      this.props.dispatch(sessionInformationActions.getTableNumber());
+    }
+
+    callWaiter = () => {
+      tableService.callWaiter(); 
+      document.getElementById('tooltip-callwaiter').style.display = 'block';
+      setTimeout(function(){
+        document.getElementById('tooltip-callwaiter').style.display = 'none';
+      }, 3000)
+    }
+
+    render() {
+      const { classes, tableNumber, billNumber } = this.props;
+      return (
+      <div className={classes.root}>
+        <div className="row">
+          <div className="col-4">
+            <div className="col-12">
+              <Tooltip title="Número da mesa">
+                <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" className={classes.icon}/>
+              </Tooltip>
+                {tableNumber}
+            </div>
+            <div className="col-12">
+              <Tooltip title="Número da conta">
+                <Receipt className={classes.icon} />
+              </Tooltip>
+                <span style={{position:'relative', bottom:'10px'}}>{billNumber}</span>
+            </div>
+          </div>
+          <div className="col-4" style={{textAlign:'center', paddingTop: 10}}>
+            <img src={Logo} className={classes.logo}/>
+          </div>
+          <div className="col-4" style={{textAlign:'right', paddingTop: 10}}>
+            <Tooltip title="Chamar garçom">
+              <RecordVoiceOver className={classes.iconRight} onClick={this.callWaiter}/>
+            </Tooltip>
+            <div id="tooltip-callwaiter" style={{display:'none'}} className={classes.waiterTooltip}>
+              <Typography style={{color: 'white'}}>Garçom a caminho!</Typography>
+            </div>
+          </div>
+        </div>
+        <AppBar
+          position="static" color="default"
+          style={{boxShadow: 'none'}}
+        >
+        <Tabs 
+          centered
+          indicatorColor="secondary"
+          textColor="primary"
+        >
+          <Tab label="Home" icon={<Home/>} component={Link} style={{textDecoration:'none'}}  to="/dashboard/home"/>
+          <Tab label="Menu" icon={<Menu/>} component={Link} style={{textDecoration:'none'}} to="/dashboard/menu" />
+          <Tab label="Checkout" icon={<Receipt/>} component={Link} style={{textDecoration:'none'}} to="/dashboard/checkout" />
+        </Tabs>
+        </AppBar>
+      </div>
+      )
+    }
 }
 
-const CustomerHeader = (props) => {
-    const { classes, tableNumber, billNumber } = props;
-    return (
-    <div className={classes.root}>
-      <div className="row">
-        <div className="col-4">
-          <div className="col-12">
-            <Tooltip title="Número da mesa">
-              <img src="https://png.icons8.com/ios/50/000000/restaurant-table.png" className={classes.icon}/>
-            </Tooltip>
-              {tableNumber}
-          </div>
-          <div className="col-12">
-            <Tooltip title="Número da conta">
-              <Receipt className={classes.icon} />
-            </Tooltip>
-              <span style={{position:'relative', bottom:'10px'}}>{billNumber}</span>
-          </div>
-        </div>
-        <div className="col-4" style={{textAlign:'center', paddingTop: 10}}>
-          <img src={Logo} className={classes.logo}/>
-        </div>
-        <div className="col-4" style={{textAlign:'right', paddingTop: 10}}>
-          <Tooltip title="Chamar garçom">
-            <RecordVoiceOver className={classes.iconRight} onClick={callWaiter}/>
-          </Tooltip>
-          <div id="tooltip-callwaiter" style={{display:'none'}} className={classes.waiterTooltip}>
-            <Typography style={{color: 'white'}}>Garçom a caminho!</Typography>
-          </div>
-        </div>
-      </div>
-      <AppBar
-        position="static" color="default"
-        style={{boxShadow: 'none'}}
-      >
-      <Tabs 
-        centered
-        indicatorColor="secondary"
-        textColor="primary"
-      >
-        <Tab label="Home" icon={<Home/>} component={Link} style={{textDecoration:'none'}}  to="/dashboard/home"/>
-        <Tab label="Menu" icon={<Menu/>} component={Link} style={{textDecoration:'none'}} to="/dashboard/menu" />
-        <Tab label="Checkout" icon={<Receipt/>} component={Link} style={{textDecoration:'none'}} to="/dashboard/checkout" />
-      </Tabs>
-      </AppBar>
-    </div>
-    )
+function mapStateToProps(state) {
+  const { tableNumber, billNumber } = state.sessionInformation;
+  return {
+    tableNumber,
+    billNumber,
+  }
 }
-  
-export default connect()(withStyles(styles)(CustomerHeader))
+
+export default connect(mapStateToProps)(withStyles(styles)(CustomerHeader))

@@ -62,18 +62,18 @@ function login(establishmentCode) {
         })
 }
 
-function loginTable(establishmentCode, table) {
+function loginTable(establishmentCode, table, bill_id) {
     return axios({
         method: 'POST',
         url: urls.API + 'authentication/loginTableAnonymously',
-        data: { establishmentCode, table }
+        data: { establishmentCode, table, bill_id }
     }).then(response => {
         // login successful if there's a jwt token in the response
         if (response && response.data.token) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
             localStorage.setItem('token', JSON.stringify(response.data.token));
         }
-        return response;
+        return response.data;
     })
     .catch( error => {
         return Promise.reject(error)

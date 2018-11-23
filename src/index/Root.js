@@ -30,7 +30,6 @@ import { Helmet } from 'react-helmet'
 import TopBar from '../components/TopBar';
 import CustomerHeader from '../components/CustomerHeader'
 import { withAlert } from 'react-alert'
-import { sessionInformationActions } from '../actions/sessionInformationActions'
 
 const User = PrivateRoute(['user'], ['anonymous'])
 const Employee = PrivateRoute(['employee', 'admin'])
@@ -49,10 +48,6 @@ class Root extends Component {
     }
   }
 
-  componentDidMount() {
-    this.props.dispatch(sessionInformationActions.getBillNumber());
-    this.props.dispatch(sessionInformationActions.getTableNumber());
-  }
   
   clearAlert = () => {
     this.props.dispatch(alertActions.clear())
@@ -72,6 +67,7 @@ class Root extends Component {
 
           {loggedInDashboard && loggedInTable && history.location.pathname === '/' && history.push('/dashboard/menu')}
           {!localStorage.getItem('token')
+            && localStorage.getItem('loggedInDashboard')
             && history.location.pathname !== '/'
             && history.location.pathname !== '/staff'
             && history.location.pathname !== '/admin'
@@ -95,9 +91,10 @@ class Root extends Component {
           <Route path='/staff/menu' component={StaffMenu} />
           <Route path='/staff/orders' component={StaffOrders} />
           <Route path='/staff/backofhouse' component={StaffBackOfHouseDashboard} />
-          <Route path="/dashboard/(menu|checkout|home)" render={(props) => (
-            <CustomerHeader billNumber={sessionInformation.billNumber} tableNumber={sessionInformation.tableNumber}  />
-          )} />
+
+            <Route path="/dashboard/(menu|checkout|home)" render={(props) => (
+              <CustomerHeader />
+            )}/>
           <Route path="/dashboard/checkout" history={history} component={Checkout} />
           <Route path="/dashboard/home" history={history} component={Home} />
           <Route path='/dashboard/menu' history={history} component={Menu} />

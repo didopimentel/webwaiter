@@ -62,7 +62,6 @@ function login(establishmentCode) {
       establishmentService.login(establishmentCode)
         .then(
           response => {
-            console.log(response)
             dispatch(success(response.code));
             history.push('/dashboard');
           },

@@ -4,11 +4,13 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button'
 import { tableActions } from '../actions/tableActions'
 import { establishmentService } from '../services/establishmentService'
+import { tableService } from '../services/tableService'
 import '../styles/webwaiter-styles.css'
 import Card from '@material-ui/core/Card'
 import Description from '@material-ui/icons/Description'
 import CardContent from '@material-ui/core/CardContent'
 import Badge from '@material-ui/core/Badge';
+import Typography from '@material-ui/core/Typography';
 import CardMedia  from '@material-ui/core/CardMedia'
 
 
@@ -17,8 +19,12 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     width: '250px'
   },
+  buttonSmall: {
+    width: '70px',
+    margin: '2px'
+  },
   icon: {
-    fontSize: 20
+    fontSize: 40
   }
 });
 
@@ -31,33 +37,42 @@ class Dashboard extends Component {
       tableNumber: '',
       imageUrl: '',
       tableArray: [],
-      index: 0
+      index: 0,
+      bills: null,
+      selectedBill: null
     }
   }
 
+  handleNextTableState = (tableObject, index) => {
+    tableService.getTableBills(tableObject._id)
+      .then(bills => {        
+        this.setState({
+          ...this.state,
+          tableID: tableObject._id,
+          tableNumber: tableObject.number,
+          index,
+          bills
+        })
+      })
+  }
 
   nextMedia = () => {
     const { tableArray } = this.state
     const index = (this.state.index === (tableArray.length-1)) ? 0 : this.state.index + 1;
-    this.setState({
-      tableID: tableArray[index]._id,
-      tableNumber: tableArray[index].number,
-      index
-    })
+    const tableObject = tableArray[index];
+    this.handleNextTableState(tableObject, index)
   }
 
   prevMedia = () => {
     const { tableArray } = this.state;
     const index = (this.state.index === 0) ? tableArray.length-1 : this.state.index - 1
-    this.setState({
-      tableID: tableArray[index]._id,
-      tableNumber: tableArray[index].number,
-      index
-    })
+    const tableObject = tableArray[index];
+    this.handleNextTableState(tableObject, index)
   }
 
   handleTableID(e) {
     this.setState({
+      ...this.state,
       tableID: e.target.value,
       imageUrl: ''
     })
@@ -72,20 +87,30 @@ class Dashboard extends Component {
     const code = authentication.establishmentCode.replace("\"", "").replace("\"", "");
 
     establishmentService.getImageUrl(code)
-                        .then((url) => {
-                          this.setState({
-                            imageUrl: url,
-                          })
-                        })
+      .then((url) => {
+        this.setState({
+          ...this.state,
+          imageUrl: url,
+        })
+      })
     establishmentService.getEstablishmentTables(code)
-                        .then((tables) => {
-                          this.setState({
-                            tableNumber: tables[0].number,
-                            tableID: tables[0]._id,
-                            tableArray: tables  
-                          })
-                        })
+      .then((tables) => {
+        this.setState({
+          ...this.state,
+          tableNumber: tables[0].number,
+          tableID: tables[0]._id,
+          tableArray: tables
+        })
+      })
 
+  }
+
+  selectBill  = (e, selectedBill) => {
+    console.log(e.target);
+    this.setState({
+      ...this.state,
+      selectedBill
+    })
   }
 
   submitTable(e) {
@@ -93,14 +118,13 @@ class Dashboard extends Component {
     const { tableID } = this.state
     const { dispatch, authentication } = this.props
     if (tableID !== ''){
-      dispatch(tableActions.login(authentication.establishmentCode, this.state.tableID))
+      dispatch(tableActions.login(authentication.establishmentCode, this.state.tableID, this.state.selectedBill))
     }
   }
 
   render(){
     const { classes } = this.props;
-    const { imageUrl, tableArray } = this.state
-    
+    const { imageUrl, tableArray, bills, selectedBill } = this.state
     if (tableArray.length == 0) return <div></div>
 
     return(
@@ -138,7 +162,24 @@ class Dashboard extends Component {
               <Description className={classes.icon} />
             </div>
             <div className="col-8">
-              
+              <div className="row">
+                <Typography>Usadas: </Typography>
+                {bills && bills.map(bill => (
+                  <div className="col-6">
+                    <Button size="small" className={classes.buttonSmall} variant={selectedBill === bill._id ? "contained" : "outlined"} mini color="primary" aria-label="Add" onClick={(e) => this.selectBill(e, bill._id)}>
+                    {bill.number}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+              <div className="row">
+                <Typography>Nova: </Typography>
+                <div className="col-12">
+                    <Button size="small" variant={selectedBill === null ? "contained" : "outlined"} mini color="primary" aria-label="Add" onClick={(e) => this.selectBill(e, null)}>
+                    Nova conta
+                    </Button>
+                  </div>
+              </div>
             </div>
           </div>
           <div className="webwaiter-footer webwaiter-vertical-container">

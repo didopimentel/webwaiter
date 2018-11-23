@@ -8,11 +8,10 @@ export const tableActions = {
   logout
 }
 
-function login(establishmentCode, table) {
+function login(establishmentCode, table, bill_id) {
     return dispatch => {
       dispatch(request(table))
-      console.log(establishmentCode)
-      establishmentService.loginTable(establishmentCode, table)
+      establishmentService.loginTable(establishmentCode, table, bill_id)
         .then(
           response => {
             dispatch(success(response));
